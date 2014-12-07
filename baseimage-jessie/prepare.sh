@@ -13,10 +13,15 @@ export INITRD=no
 mkdir -p /etc/container_environment
 echo -n no > /etc/container_environment/INITRD
 
+## update the package cache
+apt-get update
+
 ## Fix some issues with APT packages.
 ## See https://github.com/dotcloud/docker/issues/1024
 dpkg-divert --local --rename --add /sbin/initctl
 ln -sf /bin/true /sbin/initctl
+## runit package fails to install because /etc/inittab is missing.
+touch /etc/inittab
 
 ## Replace the 'ischroot' tool to make it always return true.
 ## Prevent initscripts updates from breaking /dev/shm.
@@ -43,6 +48,3 @@ apt-get dist-upgrade -y --no-install-recommends
 ## Fix locale.
 #$minimal_apt_get_install language-pack-en
 #locale-gen en_US
-
-## Fix bug where runit package fails to install because /etc/inittab is missing.
-touch /etc/inittab
