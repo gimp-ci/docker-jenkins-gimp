@@ -1,7 +1,8 @@
-# Jervis docker clients
+# GIMP docker clients
 
 These are the docker build files to create [gimp project][gimp] docker clients
-as Jenkins build slaves.
+as Jenkins build slaves.  The containers are used at
+[build.gimp.org][gimp-build].
 
 Docker files were written with a combination of
 [evarga/jenkins-slave][jenkins-slave],
@@ -13,9 +14,25 @@ prerequisites to build GIMP, BABL, and GEGL.  This same image is used by the
 [GIMP Jenkins instance][gimp-jenkins] to build the projects inside of a
 container environment.
 
-# Ubuntu gimp-docker
+# About the Images
 
-To build the `gimp-docker` image execute the following commands.
+`baseimage-jessie` was created using [phusion/baseimage][phusion].  You should
+check out that repository to learn more about it in depth.  This is the base
+image for Debian Testing (Jessie) from which gimp master is currently being
+developed.
+
+# Build instructions using make
+
+To build the baseimage.
+
+```
+make build_baseimage_jessie
+make tag_baseimage_jessie_latest
+```
+
+# Build instructions without make
+
+To build any of the docker images simply execute.
 
 ```
 docker build -t gimp-docker .
@@ -25,7 +42,7 @@ To view the image interactively it is recommeneded to connect to the container
 over SSH.  First you must get the private key.
 
 ```
-curl -o insecure_key -fSL https://github.com/phusion/baseimage-docker/raw/master/image/insecure_key
+curl -o insecure_key -fSL https://github.com/samrocketman/gimp-docker/blob/master/baseimage-jessie/insecure_key
 chmod 600 insecure_key
 ```
 
@@ -49,6 +66,7 @@ docker run -i -t gimp-docker /bin/bash
 ```
 
 [centos-baseimage]: https://github.com/pokle/centos-baseimage/blob/master/image/Dockerfile
+[gimp-build]: https://build.gimp.org/
 [gimp]: http://www.gimp.org/
 [jenkins-slave]: https://github.com/evarga/docker-images/blob/master/jenkins-slave/Dockerfile
 [jervis-docker]: https://github.com/samrocketman/jervis-docker
