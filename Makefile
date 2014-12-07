@@ -6,7 +6,7 @@ GIMP_DOCKER_JESSIE_NAME = samrocketman/gimp-docker-jessie
 GIMP_DOCKER_JESSIE_VERSION = 0.0.3
 GIMP_DOCKER_JESSIE_BASEDIR = gimp-docker-jessie
 
-.PHONY: all test tag_latest release ssh
+.PHONY: all test tag release ssh
 .PHONY: build_baseimage_jessie build_gimp_docker_jessie
 .PHONY: tag_baseimage_jessie_latest tag_gimp_docker_jessie_latest
 
@@ -26,6 +26,8 @@ tag_baseimage_jessie_latest:
 	docker tag $(BASEIMAGE_JESSIE_NAME):$(BASEIMAGE_JESSIE_VERSION) $(BASEIMAGE_JESSIE_NAME):latest
 
 all: build_baseimage_jessie build_gimp_docker_jessie tag_gimp_docker_jessie_latest tag_baseimage_jessie_latest
+
+tag: tag_gimp_docker_jessie_latest
 
 #test:
 #	env NAME=$(BASEIMAGE_JESSIE_NAME) VERSION=$(BASEIMAGE_JESSIE_VERSION) ./test/runner.sh
