@@ -35,7 +35,8 @@ make tag_baseimage_jessie_latest
 To build any of the docker images simply execute.
 
 ```
-docker build -t gimp-docker .
+cd gimp-docker-jessie
+docker build -t samrocketman/gimp-docker-jessie .
 ```
 
 To view the image interactively it is recommeneded to connect to the container
@@ -49,7 +50,7 @@ chmod 600 insecure_key
 Then start the container.
 
 ```
-docker create gimp-docker | xargs docker start | xargs docker inspect -f "{{ .NetworkSettings.IPAddress }}"
+docker create samrocketman/gimp-docker-jessie | xargs docker start | xargs docker inspect -f "{{ .NetworkSettings.IPAddress }}"
 ```
 
 The value returned from starting the container is the IP address.  Use that IP
