@@ -3,7 +3,7 @@ BASEIMAGE_JESSIE_VERSION = 0.0.1
 BASEIMAGE_JESSIE_BASEDIR = baseimage-jessie
 
 GIMP_DOCKER_JESSIE_NAME = samrocketman/gimp-docker-jessie
-GIMP_DOCKER_JESSIE_VERSION = 0.0.2
+GIMP_DOCKER_JESSIE_VERSION = 0.0.3
 GIMP_DOCKER_JESSIE_BASEDIR = gimp-docker-jessie
 
 .PHONY: all test tag_latest release ssh
