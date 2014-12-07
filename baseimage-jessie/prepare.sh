@@ -43,3 +43,6 @@ apt-get dist-upgrade -y --no-install-recommends
 ## Fix locale.
 #$minimal_apt_get_install language-pack-en
 #locale-gen en_US
+
+## Fix bug where runit package fails to install because /etc/inittab is missing.
+touch /etc/inittab
