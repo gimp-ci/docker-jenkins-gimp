@@ -21,6 +21,9 @@ check out that repository to learn more about it in depth.  This is the base
 image for Debian Testing (Jessie) from which gimp master is currently being
 developed.
 
+`gimp-docker-jessie` builds upon `baseimage-jessie`.  It is the Linux container
+that builds all of the GIMP projects.
+
 # Build instructions using make
 
 To build the baseimage.
