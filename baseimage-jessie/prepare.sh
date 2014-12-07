@@ -13,13 +13,6 @@ export INITRD=no
 mkdir -p /etc/container_environment
 echo -n no > /etc/container_environment/INITRD
 
-## Force apt-get to use -y and --
-cp /build/shared/apt/90gimp /etc/apt/apt.conf.d/90gimp
-chown root. /etc/apt/apt.conf.d/90gimp
-chmod 644 /etc/apt/apt.conf.d/90gimp
-apt-get update
-apt-get upgrade
-
 ## Fix some issues with APT packages.
 ## See https://github.com/dotcloud/docker/issues/1024
 dpkg-divert --local --rename --add /sbin/initctl
