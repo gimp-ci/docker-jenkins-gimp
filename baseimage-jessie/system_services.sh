@@ -1,6 +1,6 @@
 #!/bin/bash
 set -e
-source /build/buildconfig
+source /build/share/buildconfig
 set -x
 
 ## Install init process.

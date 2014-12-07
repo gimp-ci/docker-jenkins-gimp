@@ -1,6 +1,6 @@
 #!/bin/bash
 set -e
-source /build/buildconfig
+source /build/shared/buildconfig
 echo "Cleaning up." 1>&2
 set -x
 

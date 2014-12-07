@@ -1,6 +1,6 @@
 #!/bin/bash
 set -e
-source /build/buildconfig
+source /build/share/buildconfig
 set -x
 
 ## Temporarily disable dpkg fsync to make building faster.
