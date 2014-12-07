@@ -15,6 +15,7 @@ libatk-bridge2.0-dev:amd64
 libbz2-dev:amd64
 libdbus-1-dev:amd64
 libdbus-glib-1-dev
+libcairo2-dev
 libfreetype6:amd64
 libfreetype6-dev
 libgexiv2-dev
