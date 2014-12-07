@@ -1,6 +1,6 @@
 #!/bin/bash
 set -e
-source /build/shared/buildconfig
+source /build/buildconfig
 set -x
 
 ## Temporarily disable dpkg fsync to make building faster.
@@ -29,7 +29,7 @@ ln -sf /bin/true /usr/bin/ischroot
 ## not being able to modify /etc/hosts.
 mkdir -p /etc/workaround-docker-2267
 ln -s /etc/workaround-docker-2267 /cte
-cp /build/shared/bin/workaround-docker-2267 /usr/bin/
+cp /build/bin/workaround-docker-2267 /usr/bin/
 
 ## Install HTTPS support for APT.
 $minimal_apt_get_install apt-transport-https ca-certificates

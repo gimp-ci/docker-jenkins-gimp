@@ -3,17 +3,16 @@ MAINTAINER Sam Gleske <sam.mxracer@gmail.com>
 
 #Copy scripts into docker environment
 ENV HOME /root
-RUN mkdir -p /build/shared
+RUN mkdir /build
 ADD . /build
-ADD ../shared /build/shared
 
 #apt should always use -y --no-install-recommends
-RUN /build/shared/apt/install.sh
+RUN /build/apt/install.sh
 
 RUN /build/prepare.sh && \
 	/build/system_services.sh && \
 	/build/utilities.sh && \
-	/build/shared/cleanup.sh
+	/build/cleanup.sh
 
 # Standard SSH port
 EXPOSE 22
