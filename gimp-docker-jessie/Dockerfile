@@ -7,7 +7,10 @@ RUN mkdir /build
 ADD . /build
 RUN /etc/my_init.d/00_regen_ssh_host_keys.sh
 
-#sudo with no password
+#prepare the system
+RUN /build/prepare.sh
+
+#install sudo with no password for sudo group
 RUN /build/sudoers/install.sh
 
 #configure the SSH server
@@ -16,7 +19,7 @@ RUN /build/sshd/install.sh
 #install GIMP prerequisite packages
 #RUN /build/gimp-packages/install.sh
 
-#jenkins user info
+#jenkins user info (depends on sudo)
 RUN /build/jenkins/install.sh
 
 #some final clean up
