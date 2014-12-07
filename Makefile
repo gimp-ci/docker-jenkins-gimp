@@ -4,7 +4,7 @@ BASEIMAGE_JESSIE_BASEDIR = baseimage-jessie
 
 .PHONY: all build test tag_latest release ssh
 
-all: build-baseimage-jessie
+all: build_baseimage_jessie
 
 build_baseimage_jessie:
 	docker build -t $(BASEIMAGE_JESSIE_NAME):$(BASEIMAGE_JESSIE_VERSION) --rm $(BASEIMAGE_JESSIE_BASEDIR)
