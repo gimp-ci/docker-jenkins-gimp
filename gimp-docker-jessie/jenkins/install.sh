@@ -1,6 +1,7 @@
 #!/bin/bash
-export PS4='$ '
-echo "Setting up Jenkins client info"
+set -e
+source /build/buildconfig
+echo "Setting up Jenkins client info." 1>&2
 set -x
 
 #jenkins client requires java
