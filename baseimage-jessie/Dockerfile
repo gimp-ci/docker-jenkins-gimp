@@ -8,12 +8,12 @@ ADD . /build
 ADD ../shared /build/shared
 
 #apt should always use -y --no-install-recommends
-RUN /build/apt/install.sh
+RUN /build/shared/apt/install.sh
 
 RUN /build/prepare.sh && \
 	/build/system_services.sh && \
 	/build/utilities.sh && \
-	/build/cleanup.sh
+	/build/shared/cleanup.sh
 
 # Standard SSH port
 EXPOSE 22
