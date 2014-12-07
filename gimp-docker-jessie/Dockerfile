@@ -1,4 +1,4 @@
-FROM phusion/baseimage
+FROM samrocketman/baseimage-jessie
 MAINTAINER Sam Gleske <sam.mxracer@gmail.com>
 
 #phusion baseimage recommendations
