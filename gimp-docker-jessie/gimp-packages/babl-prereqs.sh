@@ -17,15 +17,8 @@ libv4l-0:amd64
 libv4lconvert0:amd64
 libwebp-dev:amd64
 ruby
-ruby1.9.1
-ruby2.0
-ruby2.1
 rubygems-integration
-valac-0.16
-valac-0.16-vapi
-valac-0.24
 valac
-valac-0.24-vapi
 )
 
 apt-get install ${DEPS[*]}

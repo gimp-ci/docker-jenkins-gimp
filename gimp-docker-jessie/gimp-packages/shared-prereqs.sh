@@ -32,8 +32,8 @@ libtool-bin
 make
 perl-base
 pkg-config
-python2.6
-python2.6-minimal
+#python2.6
+#python2.6-minimal
 python2.7
 python
 python2.7-dev
@@ -49,7 +49,7 @@ python3-debian
 python3-defer
 python3-gi
 python3-minimal
-python3-packagekit
+#python3-packagekit
 python3-pkg-resources
 python3-six
 python3-software-properties

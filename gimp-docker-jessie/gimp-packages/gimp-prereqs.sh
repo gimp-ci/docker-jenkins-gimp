@@ -27,7 +27,7 @@ libmng-dev:amd64
 libopenexr-dev
 libpoppler-dev:amd64
 libpoppler-glib-dev
-libtiff4-dev:amd64
+#libtiff4-dev:amd64
 libtiff5-dev:amd64
 libwebkit-dev
 libwebkitgtk-dev
