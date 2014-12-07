@@ -1,6 +1,7 @@
 #!/bin/bash
-export PS4='$ '
-echo "Cleaning up"
+set -e
+source /build/buildconfig
+echo "Cleaning up." 1>&2
 set -x
 
 apt-get clean
