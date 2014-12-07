@@ -11,7 +11,7 @@ Docker files were written with a combination of
 
 The gimp-docker container comes out of the box with all of the required
 prerequisites to build GIMP, BABL, and GEGL.  This same image is used by the
-[GIMP Jenkins instance][gimp-jenkins] to build the projects inside of a
+[GIMP Jenkins instance][gimp-build] to build the projects inside of a
 container environment.
 
 # About the Images
