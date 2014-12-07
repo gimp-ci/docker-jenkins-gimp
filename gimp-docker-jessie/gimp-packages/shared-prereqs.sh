@@ -53,6 +53,8 @@ python3-minimal
 python3-pkg-resources
 python3-six
 python3-software-properties
+unzip
+zip
 )
 
 apt-get install ${DEPS[*]}
