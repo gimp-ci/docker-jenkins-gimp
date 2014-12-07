@@ -17,7 +17,10 @@ RUN /build/sudoers/install.sh
 RUN /build/sshd/install.sh
 
 #install GIMP prerequisite packages
-#RUN /build/gimp-packages/install.sh
+RUN /build/gimp-packages/shared-prereqs.sh
+RUN /build/gimp-packages/gimp-prereqs.sh
+RUN /build/gimp-packages/babl-prereqs.sh
+RUN /build/gimp-packages/gegl-prereqs.sh
 
 #jenkins user info (depends on sudo)
 RUN /build/jenkins/install.sh
