@@ -1,5 +1,5 @@
 BASEIMAGE_JESSIE_NAME = samrocketman/baseimage-jessie
-BASEIMAGE_JESSIE_VERSION = 0.0.1
+BASEIMAGE_JESSIE_VERSION = 0.0.2
 BASEIMAGE_JESSIE_BASEDIR = baseimage-jessie
 
 GIMP_DOCKER_JESSIE_NAME = samrocketman/gimp-docker-jessie
