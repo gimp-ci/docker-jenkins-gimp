@@ -5,6 +5,7 @@ echo "Installing GEGL prerequisite packages." 1>&2
 set -x
 
 DEPS=(
+gdb
 w3m
 )
 
