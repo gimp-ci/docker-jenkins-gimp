@@ -42,6 +42,12 @@ to connect over SSH.
 ssh -i insecure_key jenkins@<ip address>
 ```
 
+To run a simple bash session in the container.
+
+```
+docker run -i -t gimp-docker /bin/bash
+```
+
 [centos-baseimage]: https://github.com/pokle/centos-baseimage/blob/master/image/Dockerfile
 [gimp]: http://www.gimp.org/
 [jenkins-slave]: https://github.com/evarga/docker-images/blob/master/jenkins-slave/Dockerfile
