@@ -5,24 +5,15 @@ MAINTAINER Sam Gleske <sam.mxracer@gmail.com>
 ENV HOME /root
 RUN mkdir /build
 ADD . /build
+WORKDIR /build
 
 #apt should always use -y --no-install-recommends
-RUN /build/apt/install.sh
-
-#prepare the system
-RUN /build/prepare.sh
-
-#install and configure services
-RUN /build/system_services.sh
-
-#install useful utilities
-RUN /build/utilities.sh
-
-#final clean up
-RUN /build/cleanup.sh
+RUN setup-agent.sh
 
 # Standard SSH port
 EXPOSE 22
 
+ENTRYPOINT ["/sbin/dumb-init", "--"]
+
 #default command
-CMD ["/sbin/my_init"]
+CMD ["/usr/sbin/sshd", "-D"]
