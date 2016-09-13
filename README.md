@@ -36,34 +36,34 @@ Export environment variables.
     export LD_LIBRARY_PATH=/usr/lib:/usr/lib/x86_64-linux-gnu:/usr/local/lib
     export PKG_CONFIG_PATH=/usr/lib/x86_64-linux-gnu/pkgconfig:/usr/lib/pkgconfig:/usr/local/lib/pkgconfig
 
-Build BABL.
+Build [BABL][babl].
 
     git clone git://git.gnome.org/babl
     ./autogen.sh
     make -j${THREADS} && make install
 
-Build GEGL.
+Build [GEGL][gegl].
 
     git clone git://git.gnome.org/gegl
     ./autogen.sh
     make -j${THREADS} && make install
 
-Build libmypaint.
+Build [libmypaint][libmypaint].
 
     git clone https://github.com/mypaint/libmypaint.git
     ./autogen.sh
     ./configure --enable-gegl
     make -j${THREADS} && make install
 
-Build GIMP.
+Build [GIMP][gimp].
 
     git clone git://git.gnome.org/gimp
     ./autogen.sh --enable-gtk-doc --enable-binreloc --enable-vector-icons
 
-[centos-baseimage]: https://github.com/pokle/centos-baseimage/blob/master/image/Dockerfile
+[babl]: http://gegl.org/babl/
+[docker-debian]: https://hub.docker.com/_/debian/
+[dumb-init]: https://github.com/Yelp/dumb-init
+[gegl]: http://www.gegl.org/
 [gimp-build]: https://build.gimp.org/
 [gimp]: http://www.gimp.org/
-[jenkins-slave]: https://github.com/evarga/docker-images/blob/master/jenkins-slave/Dockerfile
-[jervis-docker]: https://github.com/samrocketman/jervis-docker
-[jervis]: https://github.com/samrocketman/jervis
-[phusion]: https://github.com/phusion/baseimage-docker
+[libmypaint]: https://github.com/mypaint/libmypaint
