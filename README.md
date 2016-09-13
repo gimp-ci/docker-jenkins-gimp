@@ -15,7 +15,7 @@ inside of the container.
 
 # Build instructions using make
 
-To build the baseimage.
+To build the docker image.
 
 ```
 make
@@ -59,6 +59,7 @@ Build [GIMP][gimp].
 
     git clone git://git.gnome.org/gimp
     ./autogen.sh --enable-gtk-doc --enable-binreloc --enable-vector-icons
+    make -j${THREADS} && make install
 
 [babl]: http://gegl.org/babl/
 [docker-debian]: https://hub.docker.com/_/debian/
