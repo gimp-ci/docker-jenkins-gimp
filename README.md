@@ -1,73 +1,64 @@
 # GIMP docker clients
 
 These are the docker build files to create [gimp project][gimp] docker clients
-as Jenkins build slaves.  The containers are used at
+as Jenkins build slaves.  The containers will be used at
 [build.gimp.org][gimp-build].
 
-Docker files were written with a combination of
-[evarga/jenkins-slave][jenkins-slave],
-[pokle/centos-baseimage][centos-baseimage], [phusion/baseimage][phusion], and
-[samrocketman/jervis-docker][jervis-docker].
-
-The gimp-docker container comes out of the box with all of the required
-prerequisites to build GIMP, BABL, and GEGL.  This same image is used by the
-[GIMP Jenkins instance][gimp-build] to build the projects inside of a
-container environment.
+The gimp-unstable docker container comes out of the box with all of the required
+prerequisites to build BABL, GEGL, libmypaint, and GIMP.
 
 # About the Images
 
-`baseimage-jessie` was created using [phusion/baseimage][phusion].  You should
-check out that repository to learn more about it in depth.  This is the base
-image for Debian Testing (Jessie) from which gimp master is currently being
-developed.
-
-`gimp-docker-jessie` builds upon `baseimage-jessie`.  It is the Linux container
-that builds all of the GIMP projects.
+`gimp-unstable` - Uses [dumb-init][dumb-init] as the entrypoint.  Uses [Debian
+Testing docker images][docker-debian] as its base.  This can fully build GIMP
+inside of the container.
 
 # Build instructions using make
 
 To build the baseimage.
 
 ```
-make build_baseimage_jessie
-make tag_baseimage_jessie_latest
+make
 ```
 
-# Build instructions without make
+This will execute `make build` which will build the latest version of the
+gimp-unstable docker image.
 
-To build any of the docker images simply execute.
+# Building GIMP inside docker
 
-```
-cd gimp-docker-jessie
-docker build -t samrocketman/gimp-docker-jessie .
-```
+Run docker to enter the container.
 
-To view the image interactively it is recommeneded to connect to the container
-over SSH.  First you must get the private key.
+    docker run -it --rm samrocketman/gimp-unstable:latest /bin/bash
 
-```
-curl -o insecure_key -fSL https://github.com/samrocketman/gimp-docker/blob/master/baseimage-jessie/insecure_key
-chmod 600 insecure_key
-```
+Export environment variables.
 
-Then start the container.
+    THREADS=$(($(nproc)+1))
+    export LD_LIBRARY_PATH=/usr/lib:/usr/lib/x86_64-linux-gnu:/usr/local/lib
+    export PKG_CONFIG_PATH=/usr/lib/x86_64-linux-gnu/pkgconfig:/usr/lib/pkgconfig:/usr/local/lib/pkgconfig
 
-```
-docker create samrocketman/gimp-docker-jessie | xargs docker start | xargs docker inspect -f "{{ .NetworkSettings.IPAddress }}"
-```
+Build BABL.
 
-The value returned from starting the container is the IP address.  Use that IP
-to connect over SSH.
+    git clone git://git.gnome.org/babl
+    ./autogen.sh
+    make -j${THREADS} && make install
 
-```
-ssh -i insecure_key jenkins@<ip address>
-```
+Build GEGL.
 
-To run a simple bash session in the container.
+    git clone git://git.gnome.org/gegl
+    ./autogen.sh
+    make -j${THREADS} && make install
 
-```
-docker run -i -t gimp-docker /bin/bash
-```
+Build libmypaint.
+
+    git clone https://github.com/mypaint/libmypaint.git
+    ./autogen.sh
+    ./configure --enable-gegl
+    make -j${THREADS} && make install
+
+Build GIMP.
+
+    git clone git://git.gnome.org/gimp
+    ./autogen.sh --enable-gtk-doc --enable-binreloc --enable-vector-icons
 
 [centos-baseimage]: https://github.com/pokle/centos-baseimage/blob/master/image/Dockerfile
 [gimp-build]: https://build.gimp.org/

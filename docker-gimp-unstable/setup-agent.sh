@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/bin/bash -e
 export PS4='$ '
 export DEBIAN_FRONTEND=noninteractive
 
@@ -7,7 +7,7 @@ if [ ! "$USER" = 'root' ]; then
   exit 1
 fi
 
-#auto-yes for apt-get commands
+#apt should always use -y --no-install-recommends
 if [ ! -f /etc/apt/apt.conf.d/90gimp ]; then
 cat > /etc/apt/apt.conf.d/90gimp <<'EOF'
 //http://superuser.com/questions/164553/automatically-answer-yes-when-using-apt-get-install
@@ -38,6 +38,7 @@ touch /etc/inittab
 dpkg-divert --local --rename --add /usr/bin/ischroot
 ln -sf /bin/true /usr/bin/ischroot
 
+apt-get update
 apt-get install apt-transport-https ca-certificates software-properties-common
 
 
@@ -55,7 +56,6 @@ cp insecure_key.pub /etc/insecure_key.pub
 cp insecure_key /etc/insecure_key
 chmod 644 /etc/insecure_key*
 chown root. /etc/insecure_key*
-cp bin/enable_insecure_key /usr/sbin/
 
 #Install utilities
 apt-get install curl less nano vim psmisc strace
@@ -64,6 +64,9 @@ apt-get install curl less nano vim psmisc strace
 curl -Lo /sbin/dumb-init https://github.com/Yelp/dumb-init/releases/download/v1.1.3/dumb-init_1.1.3_amd64
 chown root. /sbin/dumb-init
 chmod 755 /sbin/dumb-init
+
+#install BABL, GEGL, libmypaint, and GIMP dependencies
+./tryscript.sh ./gimp-dependencies.sh
 
 #clean up
 apt-get clean

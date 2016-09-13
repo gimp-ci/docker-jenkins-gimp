@@ -1,14 +1,15 @@
-FROM debian:jessie
+#https://hub.docker.com/_/debian/
+FROM debian:testing
 MAINTAINER Sam Gleske <sam.mxracer@gmail.com>
 
 #Copy scripts into docker environment
 ENV HOME /root
+ENV USER root
 RUN mkdir /build
 ADD . /build
 WORKDIR /build
 
-#apt should always use -y --no-install-recommends
-RUN setup-agent.sh
+RUN ./setup-agent.sh
 
 # Standard SSH port
 EXPOSE 22
