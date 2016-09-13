@@ -39,25 +39,32 @@ Export environment variables.
 Build [BABL][babl].
 
     git clone git://git.gnome.org/babl
+    cd babl
     ./autogen.sh
     make -j${THREADS} && make install
 
 Build [GEGL][gegl].
 
+    cd /build
     git clone git://git.gnome.org/gegl
+    cd gegl
     ./autogen.sh
     make -j${THREADS} && make install
 
 Build [libmypaint][libmypaint].
 
+    cd /build
     git clone https://github.com/mypaint/libmypaint.git
+    cd libmypaint
     ./autogen.sh
     ./configure --enable-gegl
     make -j${THREADS} && make install
 
 Build [GIMP][gimp].
 
+    cd /build
     git clone git://git.gnome.org/gimp
+    cd gimp
     ./autogen.sh --enable-gtk-doc --enable-binreloc --enable-vector-icons
     make -j${THREADS} && make install
 
