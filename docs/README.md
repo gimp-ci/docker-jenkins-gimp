@@ -11,3 +11,7 @@ For testing purposes start a container and connect to it via SSH.
 SSH to container IP.
 
     ssh -l root -i docker-gimp-unstable/insecure_key 172.17.0.2
+
+# Scripts
+
+I use [scripts](scripts/) to help me quickly test.
