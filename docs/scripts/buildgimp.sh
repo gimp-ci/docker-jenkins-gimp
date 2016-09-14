@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/bin/bash -e
 #Sam Gleske
 #Tue Sep 13 19:08:37 PDT 2016
 #Linux 4.4.0-36-generic x86_64
@@ -27,7 +27,9 @@ for REMOTE in babl gegl gimp;do
   fi
 done
 
-git clone https://github.com/mypaint/libmypaint.git
+if [ ! -d "libmypaint" ]; then
+  git clone https://github.com/mypaint/libmypaint.git
+fi
 
 #build babl
 (
