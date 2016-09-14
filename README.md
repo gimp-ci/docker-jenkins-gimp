@@ -49,14 +49,14 @@ Export environment variables.
     export LD_LIBRARY_PATH=/usr/lib:/usr/lib/x86_64-linux-gnu:/usr/local/lib
     export PKG_CONFIG_PATH=/usr/lib/x86_64-linux-gnu/pkgconfig:/usr/lib/pkgconfig:/usr/local/lib/pkgconfig
 
-Build [BABL][babl].
+Build [BABL][babl] ([GitHub mirror][gh-babl]).
 
     git clone git://git.gnome.org/babl
     cd babl
     ./autogen.sh
     make -j${THREADS} && make install
 
-Build [GEGL][gegl].
+Build [GEGL][gegl] ([GitHub mirror][gh-gegl]).
 
     cd /build
     git clone git://git.gnome.org/gegl
@@ -73,7 +73,7 @@ Build [libmypaint][libmypaint].
     ./configure --enable-gegl
     make -j${THREADS} && make install
 
-Build [GIMP][gimp].
+Build [GIMP][gimp] ([GitHub mirror][gh-gimp]).
 
 ```bash
 cd /build
@@ -93,6 +93,9 @@ See [other documentation](docs/) for additional notes.
 [docker]: https://www.docker.com/
 [dumb-init]: https://github.com/Yelp/dumb-init
 [gegl]: http://www.gegl.org/
+[gh-babl]: https://github.com/GNOME/babl
+[gh-gegl]: https://github.com/GNOME/gegl
+[gh-gimp]: https://github.com/GNOME/gimp
 [gimp-build]: https://build.gimp.org/
 [gimp]: http://www.gimp.org/
 [libmypaint]: https://github.com/mypaint/libmypaint
