@@ -62,11 +62,16 @@ Build [libmypaint][libmypaint].
 
 Build [GIMP][gimp].
 
-    cd /build
-    git clone git://git.gnome.org/gimp
-    cd gimp
-    ./autogen.sh --enable-gtk-doc --enable-binreloc --enable-vector-icons
-    make -j${THREADS} && make install
+```bash
+cd /build
+git clone git://git.gnome.org/gimp
+cd gimp
+./autogen.sh --enable-gtk-doc --enable-binreloc --enable-vector-icons
+make -j${THREADS} && make install
+#optionally check distribution (mostly used by CI to determine the
+#distributed source is good)
+VERBOSE=1 make distcheck
+```
 
 [babl]: http://gegl.org/babl/
 [docker-debian]: https://hub.docker.com/_/debian/
