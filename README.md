@@ -7,13 +7,26 @@ as Jenkins build slaves.  The containers will be used at
 The gimp-unstable docker container comes out of the box with all of the required
 prerequisites to build BABL, GEGL, libmypaint, and GIMP.
 
-# About the Images
+### About the Images
 
 `gimp-unstable` - Uses [dumb-init][dumb-init] as the entrypoint.  Uses [Debian
 Testing docker images][docker-debian] as its base.  This can fully build GIMP
 inside of the container.
 
-# Build instructions using make
+### Prerequisite requirements
+
+System specs.
+
+* Recommended CPUs: 2 or more cores (tested with 8 CPUs).
+* Recommended RAM: 4GB or more (tested with 32GB RAM).
+* Recommended free disk: 10GB or more (tested with 220GB disk space).
+
+Required Software:
+
+* Linux Kernel (tested with `Linux 4.4.0-36-generic x86_64`)
+* [Docker][docker] (tested with `version 1.11.2, build b9f10c9`)
+
+# Build Docker image
 
 To build the docker image.
 
@@ -73,8 +86,11 @@ make -j${THREADS} && make install
 VERBOSE=1 make distcheck
 ```
 
+See [other documentation](docs/) for additional notes.
+
 [babl]: http://gegl.org/babl/
 [docker-debian]: https://hub.docker.com/_/debian/
+[docker]: https://www.docker.com/
 [dumb-init]: https://github.com/Yelp/dumb-init
 [gegl]: http://www.gegl.org/
 [gimp-build]: https://build.gimp.org/
