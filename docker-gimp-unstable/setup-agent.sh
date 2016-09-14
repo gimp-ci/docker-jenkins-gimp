@@ -47,15 +47,23 @@ apt-get install openssh-server
 mkdir -p /var/run/sshd
 mkdir -p /etc/service/sshd
 cp config/sshd_config /etc/ssh/sshd_config
+sed -i 's#\(session\s\+\)required\(\s\+pam_loginuid.so\)#\1optional\2#g' /etc/pam.d/sshd
+cat > /root/sshd <<'EOF'
+#!/bin/bash
+if [ ! -f "/etc/ssh/ssh_host_rsa_key" ]; then
+  #generate host keys
+  dpkg-reconfigure openssh-server
+fi
+/usr/sbin/sshd -D
+EOF
+chmod 755 /root/sshd
 
 ## Install default SSH key for root and app.
 mkdir -p /root/.ssh
+cp insecure_key.pub /root/.ssh/authorized_keys
 chmod 700 /root/.ssh
-chown root. /root/.ssh
-cp insecure_key.pub /etc/insecure_key.pub
-cp insecure_key /etc/insecure_key
-chmod 644 /etc/insecure_key*
-chown root. /etc/insecure_key*
+chmod 600 /root/.ssh/authorized_keys
+chown -R root. /root/.ssh
 
 #Install utilities
 apt-get install curl less nano vim psmisc strace

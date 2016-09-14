@@ -66,6 +66,7 @@ libxpm-dev
 python-cairo-dev
 python-dev
 python-gtk2-dev
+xauth
 xdg-utils
 xvfb
 )

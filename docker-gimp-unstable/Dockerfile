@@ -17,4 +17,4 @@ EXPOSE 22
 ENTRYPOINT ["/sbin/dumb-init", "--"]
 
 #default command
-CMD ["/usr/sbin/sshd", "-D"]
+CMD ["/root/sshd"]
