@@ -37,7 +37,7 @@ apt-get clean
 
 # add Jenkins user
 RUN adduser --quiet jenkins && \
-su - jenkins -c "mkdir -p /home/jenkins/usr/share/aclocal"
+su - jenkins -c "mkdir -p \"$PREFIX\"/share/aclocal"
 
 # container init
 RUN curl -Lo /bin/dumb-init https://github.com/Yelp/dumb-init/releases/download/v1.2.1/dumb-init_1.2.1_amd64 && \
