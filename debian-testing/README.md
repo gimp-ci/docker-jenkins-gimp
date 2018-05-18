@@ -22,28 +22,38 @@ Create a `gimp-data` volume which will be used by GIMP for reference cloning.
 
 The `docker run` command can also be used to update the git data in the volume.
 
+# Prepare gimp-bin docker volume
+
+This is meant only for non-Jenkins environments where a developer can share
+binaries for BABL and GEGL as required dependencies for GIMP builds.
+
+    docker volume create gimp-bin
+    docker run -v gimp-bin:/data -u root --rm gimp:latest /bin/bash -c 'chown jenkins: /data'
+
 # Build BABL
 
-Start the development environment
+Build BABL in a non-interactive Docker environment.
 
-    docker run -v gimp-data:/export:ro -it --rm gimp:latest /bin/bash
+    docker run -iv gimp-data:/export:ro -v gimp-bin:/data:rw --rm gimp:latest /bin/bash < babl.sh
 
-Clone the sources but include the reference `gimp-data` volume to speed up
-cloning.
+# Build GEGL
 
-    git clone --reference /export/babl.git git://git.gnome.org/babl
-    cd babl/
+Build GEGL in a non-interactive Docker environment.
 
-Build BABL.
+    docker run -iv gimp-data:/export:ro -v gimp-bin:/data:rw --rm gimp:latest /bin/bash < gegl.sh
 
-    ./autogen.sh
-    ./configure --prefix="$PREFIX"
-    make "-j$(nproc)"
+# Interactive Docker environment
 
-Package BABL binaries for use in a dependent build.
+To start an interactive docker environment execute the following command.
 
-    pushd "$PREFIX"
-    tar -czvf ~1/babl-internal.tar.gz lib/babl* include/babl* lib/pkgconfig/babl*
-    popd
+    docker run -v gimp-data:/export:ro -v gimp-bin:/data -it --rm gimp:latest /bin/bash
 
-Collect `babl-internal.tar.gz` as an artifact.
+While in the interactive environment it is good to remember the following tips:
+
+- `/export` path contains git repositories for babl, gegl, and gimp which can be
+  used for reference cloning via `git clone --reference ...`.
+- `/data` path is the only write-able path which will persist across restarting
+  the interactive development environment.  This is useful for saving and
+  re-using binaries and dependencies.
+- Refer to [`babl.sh`](babl.sh) and [`gegl.sh`](gegl.sh) for how the interactive
+  environment could be used.
