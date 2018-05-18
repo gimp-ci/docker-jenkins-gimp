@@ -11,6 +11,8 @@
 #    Example:
 #        git clone --reference /export/gimp.git git://git.gnome.org/gimp
 
+set -exo pipefail
+
 for x in babl gegl gimp;do
     if [ ! -d /export/"${x}".git ]; then
         git clone --mirror git://git.gnome.org/"${x}" /export/"${x}".git
