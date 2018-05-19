@@ -49,6 +49,13 @@ non-interactive Docker environment.
 
     docker run -iv gimp-data:/export:ro -v gimp-bin:/data:rw --rm gimp:latest /bin/bash < libmypaint.sh
 
+# Build mypaint-brushes 1.0
+
+GIMP specifically requires version mypaint-brushes 1.0.  Build mypaint-brushes
+in a non-interactive Docker environment.
+
+    docker run -iv gimp-data:/export:ro -v gimp-bin:/data:rw --rm gimp:latest /bin/bash < mypaint-brushes.sh
+
 # Interactive Docker environment
 
 To start an interactive docker environment execute the following command.

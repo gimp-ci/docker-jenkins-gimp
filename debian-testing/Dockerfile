@@ -36,13 +36,17 @@ RUN apt-get update && \
 apt-get install intltool libjson-c-dev && \
 apt-get clean
 
+# mypaint-brushes does not require additional dependencies
+
 #
 # Create a user and an init for running the build and handling child processes
 #
 
 # add Jenkins user
 RUN adduser --quiet jenkins && \
-su - jenkins -c "mkdir -p \"$PREFIX\"/share/aclocal"
+su - jenkins -c "mkdir -p \"$PREFIX\"/share/aclocal" && \
+mkdir -p /data && \
+chown jenkins: /data
 
 # container init
 RUN curl -Lo /bin/dumb-init https://github.com/Yelp/dumb-init/releases/download/v1.2.1/dumb-init_1.2.1_amd64 && \

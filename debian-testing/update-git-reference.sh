@@ -13,10 +13,12 @@
 
 set -exo pipefail
 
-for x in babl gegl gimp libmypaint;do
+for x in babl gegl gimp libmypaint mypaint-brushes;do
     if [ ! -d /export/"${x}".git ]; then
         if [ "$x" = 'libmypaint' ]; then
             git clone --mirror https://github.com/mypaint/libmypaint.git /export/libmypaint.git
+        elif [ "$x" = 'mypaint-brushes' ]; then
+            git clone --mirror https://github.com/Jehan/mypaint-brushes.git /export/mypaint-brushes.git
         else
             git clone --mirror git://git.gnome.org/"${x}" /export/"${x}".git
         fi
