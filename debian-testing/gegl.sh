@@ -14,6 +14,6 @@ cd "${PRODUCT}"/
 make "-j$(nproc)" install
 # package binaries for use in GIMP build
 pushd "$PREFIX"
-tar -czvf ~1/"${PRODUCT}"-internal.tar.gz lib/*"${PRODUCT}"* include/"${PRODUCT}"* lib/pkgconfig/"${PRODUCT}"* bin share
+tar -czvf ~1/"${PRODUCT}"-internal.tar.gz lib/*"${PRODUCT}"* lib/pkgconfig/"${PRODUCT}"* include/"${PRODUCT}"* bin share
 popd
 cp -f "${PRODUCT}"-internal.tar.gz /data/
