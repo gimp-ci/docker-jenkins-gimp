@@ -13,9 +13,13 @@
 
 set -exo pipefail
 
-for x in babl gegl gimp;do
+for x in babl gegl gimp libmypaint;do
     if [ ! -d /export/"${x}".git ]; then
-        git clone --mirror git://git.gnome.org/"${x}" /export/"${x}".git
+        if [ "$x" = 'libmypaint' ]; then
+            git clone --mirror https://github.com/mypaint/libmypaint.git /export/libmypaint.git
+        else
+            git clone --mirror git://git.gnome.org/"${x}" /export/"${x}".git
+        fi
     fi
     ( cd /export/"${x}".git; git remote update --prune )
 done
