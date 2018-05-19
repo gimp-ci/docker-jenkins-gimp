@@ -19,16 +19,21 @@ apt-get update && \
 apt-get install ca-certificates ca-certificates-java curl dnsutils git netcat sudo unzip zip openjdk-8-jre && \
 apt-get clean
 
-#install BABL dependencies
+# install BABL dependencies
 RUN apt-get update && \
 apt-get install autoconf automake build-essential git git libtool pkg-config w3m librsvg2-bin && \
 apt-get clean
 
-#install GEGL core dependencies
+# install GEGL core dependencies
 RUN apt-get update && \
 apt-get install autopoint libgtk2.0-dev libglib2.0-dev libjson-glib-dev libjpeg-dev && \
-#install GEGL add-on dependencies
+# install GEGL add-on dependencies
 apt-get install asciidoc enscript ruby liblua5.1-0-dev librsvg2-dev libopenexr-dev libsdl-dev libraw-dev libexiv2-dev libgexiv2-dev libv4l-dev libspiro-dev libtiff-dev libwebp-dev && \
+apt-get clean
+
+# install libmypaint dependencies
+RUN apt-get update && \
+apt-get install intltool libjson-c-dev && \
 apt-get clean
 
 #
@@ -46,7 +51,7 @@ chmod 755 /bin/dumb-init
 
 # hack to allow jenkins user to become root user for Docker image development
 # should only be uncommented for development and not be committed
-#RUN echo '%sudo ALL=NOPASSWD: ALL' > /etc/sudoers.d/90gimp && usermod -a -G sudo jenkins
+#RUN echo '%sudo ALL=NOPASSWD: ALL' > /etc/sudoers.d/90gimp && usermod -a -G sudo jenkins && apt-get install vim
 
 # default runtime environment
 ENTRYPOINT ["/bin/dumb-init", "--"]
