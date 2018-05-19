@@ -12,6 +12,7 @@ cd "${PRODUCT}"/
 ./autogen.sh
 ./configure --prefix="$PREFIX"
 make "-j$(nproc)" install
+
 # package binaries for use in GIMP build
 pushd "$PREFIX"
 tar -czvf ~1/"${PRODUCT}"-internal.tar.gz lib/*"${PRODUCT}"* lib/pkgconfig/"${PRODUCT}"* include/"${PRODUCT}"* bin share

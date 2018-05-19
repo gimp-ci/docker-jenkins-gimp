@@ -16,7 +16,8 @@ git checkout 'v1.3.0'
 ./autogen.sh
 ./configure --prefix="$PREFIX"
 make "-j$(nproc)" install
-## package binaries for use in GIMP build
+
+# package binaries for use in GIMP build
 pushd "$PREFIX"
 find share -type f -name libmypaint.mo -print0 | xargs -0 -- tar -czvf ~1/"${PRODUCT}"-internal.tar.gz lib/*"${PRODUCT}"* lib/pkgconfig/"${PRODUCT}"* include/"${PRODUCT}"*
 popd
