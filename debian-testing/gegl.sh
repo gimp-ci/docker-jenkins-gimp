@@ -1,5 +1,7 @@
 set -xeo pipefail
 
+initial_workspace="$PWD"
+
 # dependencies
 pushd "$PREFIX"
 tar -xzf /data/babl-internal.tar.gz
@@ -18,3 +20,5 @@ pushd "$PREFIX"
 tar -czvf ~1/"${PRODUCT}"-internal.tar.gz lib/*"${PRODUCT}"* lib/pkgconfig/"${PRODUCT}"* include/"${PRODUCT}"* bin share
 popd
 cp -f "${PRODUCT}"-internal.tar.gz /data/
+
+cd "${initial_workspace}"

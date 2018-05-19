@@ -1,5 +1,7 @@
 set -xeo pipefail
 
+initial_workspace="$PWD"
+
 # dependencies
 pushd "$PREFIX"
 for x in /data/{babl,gegl,libmypaint}-internal.tar.gz; do
@@ -22,3 +24,5 @@ pushd "$PREFIX"
 tar -czvf ~1/"${PRODUCT}"-internal.tar.gz share/pkgconfig/"${PRODUCT}"* share/mypaint-data
 popd
 cp -f "${PRODUCT}"-internal.tar.gz /data/
+
+cd "${initial_workspace}"
