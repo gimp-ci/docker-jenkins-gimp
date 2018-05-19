@@ -38,6 +38,15 @@ apt-get clean
 
 # mypaint-brushes does not require additional dependencies
 
+# install GIMP core dependencies
+RUN apt-get update && \
+apt-get install gtk-doc-tools xsltproc libbz2-dev libpoppler-glib-dev python-cairo-dev python-dev python-gtk2-dev poppler-data && \
+# install GIMP add-on dependencies
+apt-get install libheif-dev libwmf-dev libopenjp2-7-dev libaa1-dev iso-codes libgs-dev libwebkitgtk-dev libmng-dev libxpm-dev && \
+# test dependencies
+apt-get install xvfb appstream-util desktop-file-utils gtk2-engines-pixbuf xauth && \
+apt-get clean
+
 #
 # Create a user and an init for running the build and handling child processes
 #
@@ -55,7 +64,7 @@ chmod 755 /bin/dumb-init
 
 # hack to allow jenkins user to become root user for Docker image development
 # should only be uncommented for development and not be committed
-#RUN echo '%sudo ALL=NOPASSWD: ALL' > /etc/sudoers.d/90gimp && usermod -a -G sudo jenkins && apt-get install vim
+RUN echo '%sudo ALL=NOPASSWD: ALL' > /etc/sudoers.d/90gimp && usermod -a -G sudo jenkins && apt-get install vim
 
 # default runtime environment
 ENTRYPOINT ["/bin/dumb-init", "--"]
