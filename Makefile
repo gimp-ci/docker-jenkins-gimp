@@ -56,7 +56,7 @@ unstable:
 
 end-to-end: unstable git-volume
 	cat debian-testing/babl.sh debian-testing/gegl.sh debian-testing/libmypaint.sh debian-testing/mypaint-brushes.sh debian-testing/gimp.sh | \
-	docker run -iv $(GIT_VOLUME):/export:ro --rm gimp:latest /bin/bash
+	docker run -iv $(GIT_VOLUME):/export:ro --rm gimp:unstable /bin/bash
 
 volumes: git-volume bin-volume
 
