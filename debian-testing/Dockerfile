@@ -64,7 +64,7 @@ chmod 755 /bin/dumb-init
 
 # hack to allow jenkins user to become root user for Docker image development
 # should only be uncommented for development and not be committed
-RUN echo '%sudo ALL=NOPASSWD: ALL' > /etc/sudoers.d/90gimp && usermod -a -G sudo jenkins && apt-get install vim
+#RUN echo '%sudo ALL=NOPASSWD: ALL' > /etc/sudoers.d/90gimp && usermod -a -G sudo jenkins && apt-get install vim
 
 # default runtime environment
 ENTRYPOINT ["/bin/dumb-init", "--"]
