@@ -71,7 +71,7 @@ this will immediately run through building the latest development versions of
 
     make end-to-end
 
-# Manually GIMP inside Docker
+# Manually build GIMP inside Docker
 
 Refer to [detailed instructions](debian-testing/README.md) on building GIMP
 within the dockerized development environment from scratch.
