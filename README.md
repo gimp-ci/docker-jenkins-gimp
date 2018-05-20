@@ -1,4 +1,4 @@
-# GIMP development environment
+# GIMP Development Environment
 
 This is the development environment used by [build.gimp.org][gimp-build] to
 build and test [GIMP][gimp] from the latest development branches of BABL, GEGL,
