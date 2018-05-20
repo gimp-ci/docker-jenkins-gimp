@@ -1,5 +1,4 @@
-DOCKER_STABLE_NAME = gimp/gimp
-DOCKER_STABLE_VERSION = $$(date +%Y%d%m)
+DOCKER_STABLE_NAME = gimp/gimp DOCKER_STABLE_VERSION = $$(date +%Y%d%m)
 DOCKER_SOURCE = debian-testing
 GIT_VOLUME = gimp-git-data
 BIN_VOLUME = gimp-bin
@@ -21,7 +20,7 @@ about:
 	    make clean-all\n\
 	        Deletes all volumes and Docker images created by this repository.\n\
 	        If developing the container it is also recommended to run\n\
-	        "docker image prune"\n\n\
+	        \"docker image prune\"\n\n\
 	    make end-to-end\n\
 	        Builds everything from scratch and runs a test build of GIMP and\n\
 	        its dependencies.  This is meant for the CI environment to run a\n\
@@ -32,7 +31,7 @@ about:
 	        meant for the CI environment to auto-promote its own images.\n\n\
 	    make dockerhub-publish\n\
 			Publishes the latest stable images to the official GIMP Docker Hub\n\
-			site.  Assumes "make promotion" and "docker login" have been run.\n\
+			site.  Assumes \"make promotion\" and \"docker login\" have been run.\n\
 			This target is meant to be run by the CI environment.\n\
 	"
 
@@ -70,7 +69,11 @@ bin-volume:
 	'chown jenkins: /data'
 
 clean-all: clean-unstable clean-volumes
-	docker rmi -f $(DOCKER_STABLE_NAME):latest
+	- docker rmi -f $(DOCKER_STABLE_NAME):latest
+	@ echo "\n\n\
+	You might also want to run \"docker image prune\" and\n\
+	\"docker rmi -f debian:testing\".  These items are not directly covered by\n\
+	this clean up"\n\
 
 clean-volumes:
 	- docker volume rm $(GIT_VOLUME) $(BIN_VOLUME)
