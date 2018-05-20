@@ -1,5 +1,5 @@
 DOCKER_STABLE_NAME = gimp/gimp
-DOCKER_STABLE_VERSION = $$(date +%Y%d%m)
+DOCKER_STABLE_VERSION = $$(date +%Y%m%d)
 DOCKER_SOURCE = debian-testing
 GIT_VOLUME = gimp-git-data
 BIN_VOLUME = gimp-bin
