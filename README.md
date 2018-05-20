@@ -1,101 +1,47 @@
-# GIMP docker clients
+# GIMP development environment
 
-These are the docker build files to create [gimp project][gimp] docker clients
-as Jenkins build slaves.  The containers will be used at
-[build.gimp.org][gimp-build].
+This is the development environment used by [build.gimp.org][gimp-build] to
+build and test [GIMP][gimp] from the latest development branches of BABL, GEGL,
+and GIMP.
 
-The gimp-unstable docker container comes out of the box with all of the required
-prerequisites to build BABL, GEGL, libmypaint, and GIMP.
+### System Requirements
 
-### About the Images
+Recommended system specifications:
 
-`gimp-unstable` - Uses [dumb-init][dumb-init] as the entrypoint.  Uses [Debian
-Testing docker images][docker-debian] as its base.  This can fully build GIMP
-inside of the container.
-
-### Prerequisite requirements
-
-System specs.
-
-* Recommended CPUs: 2 or more cores (tested with 8 CPUs).
+* Recommended CPUs: 2 or more cores (tested with 4 CPUs).
 * Recommended RAM: 4GB or more (tested with 32GB RAM).
-* Recommended free disk: 10GB or more (tested with 220GB disk space).
+* Recommended free disk: 2GB or more (tested with 231GB disk).
 
 Required Software:
 
-* Linux Kernel (tested with `Linux 4.4.0-36-generic x86_64`)
-* [Docker][docker] (tested with `version 1.11.2, build b9f10c9`)
+* Linux Kernel (tested with `4.13.0-41-generic x86_64 x86_64`)
+* [Docker][docker] (tested with `Docker version 1.13.1, build 092cba3`)
 
-# Build Docker image
+# Run end to end testing
 
-To build the docker image.
+End to end testing will start from the latest base [`debian:testing`][debian]
+docker image and builds from scratch the GIMP development environment (tagged as
+docker image `gimp:unstable`).  Once the development environment is available
+this will immediately run through building the latest development versions of
+[BABL][babl], [GEGL][gegl], [libmypaint][libmypaint],
+[mypaint-brushes][mypaint-brushes], and GIMP.
 
-```
-make
-```
+    make end-to-end
 
-This will execute `make build` which will build the latest version of the
-gimp-unstable docker image.
+# Manually GIMP inside Docker
 
-# Building GIMP inside docker
+Refer to [detailed instructions](debian-testing/README.md) on building GIMP
+within the dockerized development environment.
 
-Run docker to enter the container.
+# Thanks
 
-    docker run -it --rm samrocketman/gimp-unstable:latest /bin/bash
-
-Export environment variables.
-
-    THREADS=$(($(nproc)+1))
-    export LD_LIBRARY_PATH=/usr/lib:/usr/lib/x86_64-linux-gnu:/usr/local/lib
-    export PKG_CONFIG_PATH=/usr/lib/x86_64-linux-gnu/pkgconfig:/usr/lib/pkgconfig:/usr/local/lib/pkgconfig
-
-Build [BABL][babl] ([GitHub mirror][gh-babl]).
-
-    git clone git://git.gnome.org/babl
-    cd babl
-    ./autogen.sh
-    make -j${THREADS} && make install
-
-Build [GEGL][gegl] ([GitHub mirror][gh-gegl]).
-
-    cd /build
-    git clone git://git.gnome.org/gegl
-    cd gegl
-    ./autogen.sh
-    make -j${THREADS} && make install
-
-Build [libmypaint][libmypaint].
-
-    cd /build
-    git clone https://github.com/mypaint/libmypaint.git
-    cd libmypaint
-    ./autogen.sh
-    ./configure --enable-gegl
-    make -j${THREADS} && make install
-
-Build [GIMP][gimp] ([GitHub mirror][gh-gimp]).
-
-```bash
-cd /build
-git clone git://git.gnome.org/gimp
-cd gimp
-./autogen.sh --enable-gtk-doc --enable-binreloc --enable-vector-icons
-make -j${THREADS} && make install
-#optionally check distribution (mostly used by CI to determine the
-#distributed source is good)
-VERBOSE=1 make distcheck
-```
-
-See [other documentation](docs/) for additional notes.
+- [The GIMP Team on IRC](https://www.gimp.org/irc.html) for patience and help.
 
 [babl]: http://gegl.org/babl/
-[docker-debian]: https://hub.docker.com/_/debian/
+[debian]: https://hub.docker.com/r/library/debian/
 [docker]: https://www.docker.com/
-[dumb-init]: https://github.com/Yelp/dumb-init
-[gegl]: http://www.gegl.org/
-[gh-babl]: https://github.com/GNOME/babl
-[gh-gegl]: https://github.com/GNOME/gegl
-[gh-gimp]: https://github.com/GNOME/gimp
+[gegl]: http://gegl.org/
 [gimp-build]: https://build.gimp.org/
 [gimp]: http://www.gimp.org/
 [libmypaint]: https://github.com/mypaint/libmypaint
+[mypaint-brushes]: https://github.com/Jehan/mypaint-brushes/tree/v1.3.x
