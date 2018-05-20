@@ -19,6 +19,7 @@ popd
 PRODUCT=gimp
 git clone --reference /export/"${PRODUCT}".git git://git.gnome.org/"${PRODUCT}"
 cd "${PRODUCT}"/
+[ -z "${GIMP_BRANCH}" ] || git checkout "${GIMP_BRANCH}"
 NOCONFIGURE=1 ./autogen.sh
 ./configure --prefix="$PREFIX"
 make "-j$(nproc)" install

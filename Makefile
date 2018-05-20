@@ -3,6 +3,19 @@ DOCKER_STABLE_VERSION = $$(date +%Y%m%d)
 DOCKER_SOURCE = debian-testing
 GIT_VOLUME = gimp-git-data
 BIN_VOLUME = gimp-bin
+OS_KERNEL = $(uname -s)
+#check out the appropriate branch
+ifneq ($(GIMP_BRANCH),)
+GIMP_BRANCH := $(GIMP_BRANCH)
+endif
+ifndef GIMP_BRANCH
+GIMP_BRANCH = gimp-2-10
+endif
+ifeq ($(OS_KERNEL), Darwin)
+MAKE_DISPLAY = :0
+else
+MAKE_DISPLAY = $(DISPLAY)
+endif
 
 .PHONY: about bin-volume build-gimp build-gimp clean-all clean-unstable clean-volumes dockerhub-publish end-to-end gimp-gui gimp-gui git-volume interactive promote unstable volumes
 
@@ -37,10 +50,10 @@ about:
 	"
 
 interactive:
-	docker run -ite DISPLAY=$$DISPLAY -v /tmp/.X11-unix:/tmp/.X11-unix -v $(GIT_VOLUME):/export:ro -v $(BIN_VOLUME):/data:rw --rm $(DOCKER_STABLE_NAME):latest /bin/bash
+	docker run -e GIMP_BRANCH=$(GIMP_BRANCH) -ite DISPLAY=$$DISPLAY -v /tmp/.X11-unix:/tmp/.X11-unix -v $(GIT_VOLUME):/export:ro -v $(BIN_VOLUME):/data:rw --rm $(DOCKER_STABLE_NAME):latest /bin/bash
 
 gimp-gui:
-	docker run -ie DISPLAY=$$DISPLAY -v /tmp/.X11-unix:/tmp/.X11-unix -v $(GIT_VOLUME):/export:ro -v $(BIN_VOLUME):/data:rw --rm $(DOCKER_STABLE_NAME):latest \
+	docker run -ie DISPLAY=$(MAKE_DISPLAY) -v /tmp/.X11-unix:/tmp/.X11-unix -v $(GIT_VOLUME):/export:ro -v $(BIN_VOLUME):/data:rw --rm $(DOCKER_STABLE_NAME):latest \
 	/bin/bash -c 'tar -C "$$PREFIX" -xzf /data/gimp-internal.tar.gz && gimp'
 
 build-gimp: volumes
@@ -48,7 +61,7 @@ build-gimp: volumes
 	docker run -iv $(GIT_VOLUME):/export:ro -v $(BIN_VOLUME):/data:rw --rm $(DOCKER_STABLE_NAME):latest /bin/bash < $(DOCKER_SOURCE)/gegl.sh
 	docker run -iv $(GIT_VOLUME):/export:ro -v $(BIN_VOLUME):/data:rw --rm $(DOCKER_STABLE_NAME):latest /bin/bash < $(DOCKER_SOURCE)/libmypaint.sh
 	docker run -iv $(GIT_VOLUME):/export:ro -v $(BIN_VOLUME):/data:rw --rm $(DOCKER_STABLE_NAME):latest /bin/bash < $(DOCKER_SOURCE)/mypaint-brushes.sh
-	docker run -e SKIP_MAKE_CHECK=1 -iv $(GIT_VOLUME):/export:ro -v $(BIN_VOLUME):/data:rw --rm $(DOCKER_STABLE_NAME):latest /bin/bash < $(DOCKER_SOURCE)/gimp.sh
+	docker run -e GIMP_BRANCH=$(GIMP_BRANCH) -e SKIP_MAKE_CHECK=1 -iv $(GIT_VOLUME):/export:ro -v $(BIN_VOLUME):/data:rw --rm $(DOCKER_STABLE_NAME):latest /bin/bash < $(DOCKER_SOURCE)/gimp.sh
 
 unstable:
 	docker pull debian:testing
