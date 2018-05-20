@@ -31,9 +31,9 @@ about:
 	        This assumes the unstable image passed end to end testing.  This is\n\
 	        meant for the CI environment to auto-promote its own images.\n\n\
 	    make dockerhub-publish\n\
-			Publishes the latest stable images to the official GIMP Docker Hub\n\
-			site.  Assumes \"make promotion\" and \"docker login\" have been run.\n\
-			This target is meant to be run by the CI environment.\n\
+	        Publishes the latest stable images to the official GIMP Docker Hub\n\
+	        site.  Assumes \"make promotion\" and \"docker login\" have been run.\n\
+	        This target is meant to be run by the CI environment.\n\
 	"
 
 interactive:

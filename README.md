@@ -42,7 +42,7 @@ Other supported make targets:
     make clean-all
         Deletes all volumes and Docker images created by this repository.
         If developing the container it is also recommended to run
-        docker image prune
+        "docker image prune"
 
     make end-to-end
         Builds everything from scratch and runs a test build of GIMP and
@@ -55,9 +55,9 @@ Other supported make targets:
         meant for the CI environment to auto-promote its own images.
 
     make dockerhub-publish
-		Publishes the latest stable images to the official GIMP Docker Hub
-		site.  Assumes make promotion and docker login have been run.
-		This target is meant to be run by the CI environment.
+        Publishes the latest stable images to the official GIMP Docker Hub
+        site.  Assumes "make promotion" and "docker login" have been run.
+        This target is meant to be run by the CI environment.
 ```
 
 # Run end to end testing
