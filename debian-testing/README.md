@@ -8,14 +8,15 @@ This will create the docker image and tag `gimp:latest`
 
 # Prepare gimp-git-data docker volume
 
-The `gimp-git-data` docker volume will be used by other docker containers to speed
-up cloning from gnome.  This has two benefits:
+The `gimp-git-data` docker volume will be used by other docker containers to
+speed up cloning from gnome.  This has two benefits:
 
 - Cloning from GNOME infrastructure occurs more quickly.
 - Less strain is placed on GNOME infrastructure by locally caching the majority
   of the git data to be cloned.
 
-Create a `gimp-git-data` volume which will be used by GIMP for reference cloning.
+Create a `gimp-git-data` volume which will be used by GIMP for reference
+cloning.
 
     docker volume create gimp-git-data
     docker run -iv gimp-git-data:/export -u root --rm gimp:latest /bin/bash < update-git-reference.sh
