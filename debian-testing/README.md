@@ -6,19 +6,19 @@ Build the docker image used for building GIMP and its dependencies.
 
 This will create the docker image and tag `gimp:latest`
 
-# Prepare gimp-data docker volume
+# Prepare gimp-git-data docker volume
 
-The `gimp-data` docker volume will be used by other docker containers to speed
+The `gimp-git-data` docker volume will be used by other docker containers to speed
 up cloning from gnome.  This has two benefits:
 
 - Cloning from GNOME infrastructure occurs more quickly.
 - Less strain is placed on GNOME infrastructure by locally caching the majority
   of the git data to be cloned.
 
-Create a `gimp-data` volume which will be used by GIMP for reference cloning.
+Create a `gimp-git-data` volume which will be used by GIMP for reference cloning.
 
-    docker volume create gimp-data
-    docker run -iv gimp-data:/export -u root --rm gimp:latest /bin/bash < update-git-reference.sh
+    docker volume create gimp-git-data
+    docker run -iv gimp-git-data:/export -u root --rm gimp:latest /bin/bash < update-git-reference.sh
 
 The `docker run` command can also be used to update the git data in the volume.
 
@@ -34,46 +34,46 @@ binaries for BABL and GEGL as required dependencies for GIMP builds.
 
 Build BABL in a non-interactive Docker environment.
 
-    docker run -iv gimp-data:/export:ro -v gimp-bin:/data:rw --rm gimp:latest /bin/bash < babl.sh
+    docker run -iv gimp-git-data:/export:ro -v gimp-bin:/data:rw --rm gimp:latest /bin/bash < babl.sh
 
 # Build GEGL
 
 Build GEGL in a non-interactive Docker environment.
 
-    docker run -iv gimp-data:/export:ro -v gimp-bin:/data:rw --rm gimp:latest /bin/bash < gegl.sh
+    docker run -iv gimp-git-data:/export:ro -v gimp-bin:/data:rw --rm gimp:latest /bin/bash < gegl.sh
 
 # Build libmypaint 1.3.0
 
 GIMP specifically requires version libmypaint 1.3.0.  Build libmypaint in a
 non-interactive Docker environment.
 
-    docker run -iv gimp-data:/export:ro -v gimp-bin:/data:rw --rm gimp:latest /bin/bash < libmypaint.sh
+    docker run -iv gimp-git-data:/export:ro -v gimp-bin:/data:rw --rm gimp:latest /bin/bash < libmypaint.sh
 
 # Build mypaint-brushes 1.0
 
 GIMP specifically requires version mypaint-brushes 1.0.  Build mypaint-brushes
 in a non-interactive Docker environment.
 
-    docker run -iv gimp-data:/export:ro -v gimp-bin:/data:rw --rm gimp:latest /bin/bash < mypaint-brushes.sh
+    docker run -iv gimp-git-data:/export:ro -v gimp-bin:/data:rw --rm gimp:latest /bin/bash < mypaint-brushes.sh
 
 # Build GIMP
 
 Build GIMP from master branch.
 
-    docker run -iv gimp-data:/export:ro -v gimp-bin:/data:rw --rm gimp:latest /bin/bash < gimp.sh
+    docker run -iv gimp-git-data:/export:ro -v gimp-bin:/data:rw --rm gimp:latest /bin/bash < gimp.sh
 
 # Run GIMP GUI
 
 To run the development build created using docker execute the following command.
 It is assumed the default environment of the host is running X11.
 
-    docker run -ie DISPLAY=$DISPLAY -v /tmp/.X11-unix:/tmp/.X11-unix -v gimp-data:/export:ro -v gimp-bin:/data --rm gimp:latest /bin/bash -c 'tar -C "$PREFIX" -xzf /data/gimp-internal.tar.gz && gimp'
+    docker run -ie DISPLAY=$DISPLAY -v /tmp/.X11-unix:/tmp/.X11-unix -v gimp-git-data:/export:ro -v gimp-bin:/data --rm gimp:latest /bin/bash -c 'tar -C "$PREFIX" -xzf /data/gimp-internal.tar.gz && gimp'
 
 # Interactive Docker environment
 
 To start an interactive docker environment execute the following command.
 
-    docker run -v gimp-data:/export:ro -v gimp-bin:/data -it --rm gimp:latest /bin/bash
+    docker run -v gimp-git-data:/export:ro -v gimp-bin:/data -it --rm gimp:latest /bin/bash
 
 While in the interactive environment it is good to remember the following tips:
 
