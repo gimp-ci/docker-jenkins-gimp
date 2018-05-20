@@ -56,6 +56,19 @@ in a non-interactive Docker environment.
 
     docker run -iv gimp-data:/export:ro -v gimp-bin:/data:rw --rm gimp:latest /bin/bash < mypaint-brushes.sh
 
+# Build GIMP
+
+Build GIMP from master branch.
+
+    docker run -iv gimp-data:/export:ro -v gimp-bin:/data:rw --rm gimp:latest /bin/bash < gimp.sh
+
+# Run GIMP GUI
+
+To run the development build created using docker execute the following command.
+It is assumed the default environment of the host is running X11.
+
+    docker run -ie DISPLAY=$DISPLAY -v /tmp/.X11-unix:/tmp/.X11-unix -v gimp-data:/export:ro -v gimp-bin:/data --rm gimp:latest /bin/bash -c 'tar -C "$PREFIX" -xzf /data/gimp-internal.tar.gz && gimp'
+
 # Interactive Docker environment
 
 To start an interactive docker environment execute the following command.

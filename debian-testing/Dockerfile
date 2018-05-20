@@ -43,8 +43,8 @@ RUN apt-get update && \
 apt-get install gtk-doc-tools xsltproc libbz2-dev libpoppler-glib-dev python-cairo-dev python-dev python-gtk2-dev poppler-data && \
 # install GIMP add-on dependencies
 apt-get install libheif-dev libwmf-dev libopenjp2-7-dev libaa1-dev iso-codes libgs-dev libwebkitgtk-dev libmng-dev libxpm-dev && \
-# test dependencies
-apt-get install xvfb appstream-util desktop-file-utils gtk2-engines-pixbuf xauth && \
+# test and GUI dependencies
+apt-get install xvfb appstream-util desktop-file-utils gtk2-engines-pixbuf xauth libcanberra-gtk-module dbus-x11 && \
 apt-get clean
 
 #

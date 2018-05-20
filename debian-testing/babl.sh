@@ -6,7 +6,7 @@ initial_workspace="$PWD"
 PRODUCT=babl
 git clone --reference /export/"${PRODUCT}".git git://git.gnome.org/"${PRODUCT}"
 cd "${PRODUCT}"/
-./autogen.sh
+NOCONFIGURE=1 ./autogen.sh
 ./configure --prefix="$PREFIX"
 make "-j$(nproc)" install
 
