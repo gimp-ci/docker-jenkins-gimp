@@ -1,3 +1,9 @@
+#!/bin/bash
+#Created by Sam Gleske
+#Ubuntu 16.04.4 LTS
+#Linux 4.13.0-41-generic x86_64
+#GNU bash, version 4.3.48(1)-release (x86_64-pc-linux-gnu)
+
 set -xeo pipefail
 
 initial_workspace="$PWD"
