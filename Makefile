@@ -1,4 +1,5 @@
-DOCKER_STABLE_NAME = gimp/gimp DOCKER_STABLE_VERSION = $$(date +%Y%d%m)
+DOCKER_STABLE_NAME = gimp/gimp
+DOCKER_STABLE_VERSION = $$(date +%Y%d%m)
 DOCKER_SOURCE = debian-testing
 GIT_VOLUME = gimp-git-data
 BIN_VOLUME = gimp-bin
@@ -61,7 +62,7 @@ volumes: git-volume bin-volume
 
 git-volume:
 	docker volume create $(GIT_VOLUME)
-	docker run -iv $(GIT_VOLUME):/export -u root --rm gimp:latest /bin/bash < debian-testing/update-git-reference.sh
+	docker run -iv $(GIT_VOLUME):/export -u root --rm $(DOCKER_STABLE_NAME):latest /bin/bash < debian-testing/update-git-reference.sh
 
 bin-volume:
 	docker volume create $(BIN_VOLUME)
@@ -82,9 +83,9 @@ clean-unstable:
 	- docker rmi -f gimp:unstable
 
 promote:
-	docker tag gimp:unstable $(DOCKER_STABLE_NAME):$(GIMP_STABLE_VERSION)
+	docker tag gimp:unstable $(DOCKER_STABLE_NAME):$(DOCKER_STABLE_VERSION)
 	docker tag gimp:unstable $(DOCKER_STABLE_NAME):latest
 
 dockerhub-publish:
-	docker push $(DOCKER_STABLE_NAME):$(GIMP_STABLE_VERSION)
+	docker push $(DOCKER_STABLE_NAME):$(DOCKER_STABLE_VERSION)
 	docker push $(DOCKER_STABLE_NAME):latest
