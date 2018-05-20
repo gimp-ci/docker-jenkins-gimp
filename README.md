@@ -1,8 +1,8 @@
 # GIMP Development Environment
 
 This is the development environment used by [build.gimp.org][gimp-build] to
-build and test [GIMP][gimp] from the latest development branches of BABL, GEGL,
-and GIMP.
+build and test [GIMP][gimp] from the latest development branches of
+[BABL][babl], [GEGL][gegl], and [GIMP][gimp].
 
 ### System Requirements
 
@@ -67,7 +67,7 @@ docker image and builds from scratch the GIMP development environment (tagged as
 docker image `gimp:unstable`).  Once the development environment is available
 this will immediately run through building the latest development versions of
 [BABL][babl], [GEGL][gegl], [libmypaint][libmypaint],
-[mypaint-brushes][mypaint-brushes], and GIMP.
+[mypaint-brushes][mypaint-brushes], and [GIMP][gimp].
 
     make end-to-end
 
