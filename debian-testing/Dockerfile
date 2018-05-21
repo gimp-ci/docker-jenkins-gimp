@@ -47,6 +47,11 @@ apt-get install libheif-dev libwmf-dev libopenjp2-7-dev libaa1-dev iso-codes lib
 apt-get install xvfb appstream-util desktop-file-utils gtk2-engines-pixbuf xauth libcanberra-gtk-module dbus-x11 && \
 apt-get clean
 
+# install GIMP GTK3 dependencies
+RUN apt-get update && \
+apt-get install libgtk-3-dev libwebkitgtk-3.0-dev && \
+apt-get clean
+
 #
 # Create a user and an init for running the build and handling child processes
 #

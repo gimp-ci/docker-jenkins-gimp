@@ -44,6 +44,10 @@ Start an interactive terminal which also supports starting the GUI.
 
 Other supported make targets:
 
+    make clean
+        Will only delete the volume used to house internal binary artifacts
+        for building.
+
     make clean-all
         Deletes all volumes and Docker images created by this repository.
         If developing the container it is also recommended to run
@@ -51,8 +55,9 @@ Other supported make targets:
 
     make end-to-end
         Builds everything from scratch and runs a test build of GIMP and
-        its dependencies.  This is meant for the CI environment to run a
-        full container build pulling in the latest Debian testing packages.
+		its dependencies.  Covers GIMP versions 2.8, 2.10, and master.
+        This is meant for the CI environment to run a full container build
+        pulling in the latest Debian testing packages.
 
     make promote
         Promotes the latest unstable image to stable status and tags it.
@@ -63,6 +68,72 @@ Other supported make targets:
         Publishes the latest stable images to the official GIMP Docker Hub
         site.  Assumes "make promotion" and "docker login" have been run.
         This target is meant to be run by the CI environment.
+
+Configurable environment variables:
+
+    BIN_SUFFIX
+        Configures an additional suffix for the gimp-bin docker volume.
+        The volume is used to hold intermediate binary artifacts.  Useful
+        to customize working on multiple versions of GIMP simultaneously.
+
+    GEGL_BRANCH
+        Customize the git branch to build GEGL.  Useful for building
+        alternate versions of GIMP.
+
+    GIMP_BRANCH
+        Customize the git branch to build GIMP.  Useful for building
+        alternate versions of GIMP.
+```
+
+# Building alternate GIMP versions
+
+The GIMP Development Environment by default builds the latest development branch
+(GIMP branch `master`).  However, other branches of GIMP and GEGL can be built
+as well.  Customizable environment variables.
+
+| Variable      | Description                                                 |
+| ------------- | ----------------------------------------------------------- |
+| `BIN_SUFFIX`  | Customizes the intermediate binary artifact docker volume.  |
+| `GEGL_BRANCH` | Customizes the `git` branch to build for GEGL.              |
+| `GIMP_BRANCH` | Customizes the `git` branch to build for GIMP.              |
+
+The binary artifact volume (can be seen with `docker volume ls` command) is
+named `gimp-bin` by default.  This volume is used to share intermediate binary
+artifacts in order to build GIMP and all of its dependencies across multiple
+containers as well as launching the GIMP GUI.  This should definitely be
+customized if planning to build and launch multiple versions of GIMP
+simultaneously.
+
+### Build GIMP 2.8
+
+To build and run the latest GIMP 2.8 run the following commands.
+
+```bash
+export BIN_SUFFIX='-2.8'
+export GEGL_BRANCH='gegl-0-2'
+export GIMP_BRANCH='gimp-2-8'
+make build-gimp
+make gimp-gui
+```
+
+### Build GIMP 2.10
+
+To build and run the latest GIMP 2.10 run the following commands.
+
+```bash
+export BIN_SUFFIX='-2.10'
+export GIMP_BRANCH='gimp-2-10'
+make build-gimp
+make gimp-gui
+```
+
+### Build GIMP master
+
+No environment changes are required to build GIMP from `master`.  Simply run:
+
+```
+make build-gimp
+make gimp-gui
 ```
 
 # Run end to end testing
