@@ -12,10 +12,15 @@ Recommended system specifications:
 * Recommended RAM: 4GB or more (tested with 32GB RAM).
 * Recommended free disk: 2GB or more (tested with 231GB disk).
 
-Required Software:
+Recommended Software:
 
 * Linux Kernel (tested with `4.13.0-41-generic x86_64 x86_64`)
 * [Docker][docker] (tested with `Docker version 1.13.1, build 092cba3`)
+
+If using Mac OS X:
+
+* [Docker for Mac][docker4m]
+* [XQuartz][xquartz]
 
 # Getting started
 
@@ -82,9 +87,11 @@ within the dockerized development environment from scratch.
 
 [babl]: http://gegl.org/babl/
 [debian]: https://hub.docker.com/r/library/debian/
+[docker4m]: https://www.docker.com/docker-mac
 [docker]: https://www.docker.com/
 [gegl]: http://gegl.org/
 [gimp-build]: https://build.gimp.org/
 [gimp]: http://www.gimp.org/
 [libmypaint]: https://github.com/mypaint/libmypaint
 [mypaint-brushes]: https://github.com/Jehan/mypaint-brushes/tree/v1.3.x
+[xquartz]: https://www.xquartz.org/
