@@ -28,7 +28,8 @@ else
 	MAKE_DISPLAY := $(DISPLAY)
 endif
 
-.PHONY: about bin-volume build-gimp build-gimp clean clean-all clean-bin-volume clean-git-volume clean-unstable clean-volumes dockerhub-publish end-to-end gimp-gui gimp-gui git-volume interactive osx-display promote unstable volumes
+.PHONY: about bin-volume build-gimp build-gimp clean clean-all clean-bin-volume clean-git-volume clean-unstable clean-volumes dockerhub-publish end-to-end gimp-gui gimp-gui git-volume interactive osx-display promote release unstable volumes
+
 
 about:
 	@ echo "\
@@ -142,8 +143,10 @@ clean-unstable:
 	- docker rmi -f gimp:unstable
 
 promote:
-	docker tag gimp:unstable $(DOCKER_STABLE_NAME):$(DOCKER_STABLE_VERSION)
 	docker tag gimp:unstable $(DOCKER_STABLE_NAME):latest
+
+release:
+	docker tag gimp:unstable $(DOCKER_STABLE_NAME):$(DOCKER_STABLE_VERSION)
 
 dockerhub-publish:
 	docker push $(DOCKER_STABLE_NAME):$(DOCKER_STABLE_VERSION)
