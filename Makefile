@@ -1,23 +1,24 @@
-DOCKER_STABLE_NAME = gimp/gimp
-DOCKER_STABLE_VERSION = $$(date +%Y%m%d)
-DOCKER_SOURCE = debian-testing
-GIT_VOLUME = gimp-git-data
-BIN_VOLUME = gimp-bin
-OS_KERNEL = $(uname -s)
-#check out the appropriate branch
+DOCKER_SOURCE := debian-testing
+DOCKER_STABLE_NAME := gimp/gimp
+DOCKER_STABLE_VERSION := $(shell date +%Y%m%d)
+GIT_VOLUME := gimp-git-data
+BIN_VOLUME := gimp-bin
+OS_KERNEL := $(shell uname -s)
+# check out the appropriate GIMP branch
 ifneq ($(GIMP_BRANCH),)
-GIMP_BRANCH := $(GIMP_BRANCH)
+	GIMP_BRANCH := $(GIMP_BRANCH)
 endif
 ifndef GIMP_BRANCH
-GIMP_BRANCH = gimp-2-10
+	GIMP_BRANCH := gimp-2-10
 endif
 ifeq ($(OS_KERNEL), Darwin)
-MAKE_DISPLAY = :0
+	HOST_IP := $(shell ifconfig en0 | awk '$$1 == "inet" { print $$2 }')
+	MAKE_DISPLAY := $(HOST_IP):0
 else
-MAKE_DISPLAY = $(DISPLAY)
+	MAKE_DISPLAY := $(DISPLAY)
 endif
 
-.PHONY: about bin-volume build-gimp build-gimp clean-all clean-unstable clean-volumes dockerhub-publish end-to-end gimp-gui gimp-gui git-volume interactive promote unstable volumes
+.PHONY: about bin-volume build-gimp build-gimp clean-all clean-unstable clean-volumes dockerhub-publish end-to-end gimp-gui gimp-gui git-volume interactive osx-display promote unstable volumes
 
 about:
 	@ echo "\
@@ -48,11 +49,17 @@ about:
 	        site.  Assumes \"make promotion\" and \"docker login\" have been run.\n\
 	        This target is meant to be run by the CI environment.\n\
 	"
+osx-display:
+	set -ex; if [ "$(OS_KERNEL)" = 'Darwin' ]; then \
+		open -a XQuartz; \
+		defaults write org.macosforge.xquartz.X11 nolisten_tcp -boolean false; \
+		xhost +$(HOST_IP); \
+	fi
 
-interactive:
-	docker run -e GIMP_BRANCH=$(GIMP_BRANCH) -ite DISPLAY=$$DISPLAY -v /tmp/.X11-unix:/tmp/.X11-unix -v $(GIT_VOLUME):/export:ro -v $(BIN_VOLUME):/data:rw --rm $(DOCKER_STABLE_NAME):latest /bin/bash
+interactive: osx-display
+	docker run -e GIMP_BRANCH=$(GIMP_BRANCH) -ite DISPLAY=$(MAKE_DISPLAY) -v /tmp/.X11-unix:/tmp/.X11-unix -v $(GIT_VOLUME):/export:ro -v $(BIN_VOLUME):/data:rw --rm $(DOCKER_STABLE_NAME):latest /bin/bash
 
-gimp-gui:
+gimp-gui: osx-display
 	docker run -ie DISPLAY=$(MAKE_DISPLAY) -v /tmp/.X11-unix:/tmp/.X11-unix -v $(GIT_VOLUME):/export:ro -v $(BIN_VOLUME):/data:rw --rm $(DOCKER_STABLE_NAME):latest \
 	/bin/bash -c 'tar -C "$$PREFIX" -xzf /data/gimp-internal.tar.gz && gimp'
 
