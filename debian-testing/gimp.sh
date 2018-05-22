@@ -17,11 +17,11 @@ popd
 
 # build
 PRODUCT=gimp
+rm -rf "${PRODUCT}"/
 git clone --reference /export/"${PRODUCT}".git git://git.gnome.org/"${PRODUCT}"
 cd "${PRODUCT}"/
 [ -z "${GIMP_BRANCH}" ] || git checkout "${GIMP_BRANCH}"
-NOCONFIGURE=1 ./autogen.sh
-./configure --prefix="$PREFIX"
+./autogen.sh --prefix="$PREFIX" --enable-gtk-doc
 make "-j$(nproc)" install
 [ -n "${SKIP_MAKE_CHECK:-}" ] || make check
 
