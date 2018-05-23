@@ -17,8 +17,7 @@ popd
 
 # build
 PRODUCT=gimp
-rm -rf "${PRODUCT}"/
-git clone --reference /export/"${PRODUCT}".git git://git.gnome.org/"${PRODUCT}"
+[ -d "${PRODUCT}" ] || git clone --reference /export/"${PRODUCT}".git git://git.gnome.org/"${PRODUCT}"
 cd "${PRODUCT}"/
 [ -z "${GIMP_BRANCH}" ] || git checkout "${GIMP_BRANCH}"
 ./autogen.sh --prefix="$PREFIX" --enable-gtk-doc

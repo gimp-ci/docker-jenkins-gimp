@@ -17,8 +17,7 @@ popd
 
 # build
 PRODUCT=libmypaint
-rm -rf "${PRODUCT}"/
-git clone --reference /export/"${PRODUCT}".git https://github.com/mypaint/libmypaint.git
+[ -d "${PRODUCT}" ] || git clone --reference /export/"${PRODUCT}".git https://github.com/mypaint/libmypaint.git
 cd "${PRODUCT}"/
 git fetch /export/"${PRODUCT}".git '+refs/tags/v1.3.0:refs/tags/v1.3.0'
 git checkout 'v1.3.0'

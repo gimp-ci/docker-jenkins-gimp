@@ -10,8 +10,7 @@ initial_workspace="$PWD"
 
 # build
 PRODUCT=babl
-rm -rf "${PRODUCT}"/
-git clone --reference /export/"${PRODUCT}".git git://git.gnome.org/"${PRODUCT}"
+[ -d "${PRODUCT}" ] || git clone --reference /export/"${PRODUCT}".git git://git.gnome.org/"${PRODUCT}"
 cd "${PRODUCT}"/
 NOCONFIGURE=1 ./autogen.sh
 ./configure --prefix="$PREFIX"

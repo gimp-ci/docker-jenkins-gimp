@@ -15,8 +15,7 @@ popd
 
 # build
 PRODUCT=gegl
-rm -rf "${PRODUCT}"/
-git clone --reference /export/"${PRODUCT}".git git://git.gnome.org/"${PRODUCT}"
+[ -d "${PRODUCT}" ] || git clone --reference /export/"${PRODUCT}".git git://git.gnome.org/"${PRODUCT}"
 cd "${PRODUCT}"/
 [ -z "${GEGL_BRANCH}" ] || git checkout "${GEGL_BRANCH}"
 NOCONFIGURE=1 ./autogen.sh
