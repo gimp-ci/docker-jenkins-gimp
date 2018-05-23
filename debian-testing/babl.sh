@@ -10,7 +10,12 @@ initial_workspace="$PWD"
 
 # build
 PRODUCT=babl
-[ -d "${PRODUCT}" ] || git clone --reference /export/"${PRODUCT}".git git://git.gnome.org/"${PRODUCT}"
+REPOSITORY=git://git.gnome.org/"${PRODUCT}"
+GIT_ARGS=()
+if [ -d /export/"${PRODUCT}".git ]; then
+    GIT_ARGS=(--reference /export/"${PRODUCT}".git)
+fi
+[ -d "${PRODUCT}" ] || git clone "${GIT_ARGS[@]}" "${REPOSITORY}"
 cd "${PRODUCT}"/
 NOCONFIGURE=1 ./autogen.sh
 ./configure --prefix="$PREFIX"

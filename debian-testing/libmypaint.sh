@@ -17,7 +17,12 @@ popd
 
 # build
 PRODUCT=libmypaint
-[ -d "${PRODUCT}" ] || git clone --reference /export/"${PRODUCT}".git https://github.com/mypaint/libmypaint.git
+REPOSITORY=https://github.com/mypaint/libmypaint.git
+GIT_ARGS=()
+if [ -d /export/"${PRODUCT}".git ]; then
+    GIT_ARGS=(--reference /export/"${PRODUCT}".git)
+fi
+[ -d "${PRODUCT}" ] || git clone "${GIT_ARGS[@]}" "${REPOSITORY}"
 cd "${PRODUCT}"/
 git fetch /export/"${PRODUCT}".git '+refs/tags/v1.3.0:refs/tags/v1.3.0'
 git checkout 'v1.3.0'
