@@ -27,6 +27,15 @@ ifeq ($(OS_KERNEL), Darwin)
 else
 	MAKE_DISPLAY := $(DISPLAY)
 endif
+ifdef ROOT_LOGIN
+	INTERACTIVE_USER := root
+else
+	INTERACTIVE_USER := jenkins
+endif
+
+ifdef SKIP_TESTS
+	override SKIP_TESTS := -e SKIP_MAKE_CHECK=1
+endif
 
 .PHONY: about bin-volume build-gimp build-gimp clean clean-all clean-bin-volume clean-git-volume clean-unstable clean-volumes dockerhub-publish end-to-end gimp-gui gimp-gui git-volume interactive osx-display promote release unstable volumes
 
@@ -83,7 +92,7 @@ osx-display:
 	fi
 
 interactive: osx-display
-	docker run -e GIMP_BRANCH=$(GIMP_BRANCH) -ite DISPLAY=$(MAKE_DISPLAY) -v /tmp/.X11-unix:/tmp/.X11-unix -v $(GIT_VOLUME):/export:ro -v $(BIN_VOLUME):/data:rw --rm $(DOCKER_STABLE_NAME):latest /bin/bash
+	docker run -e GIMP_BRANCH=$(GIMP_BRANCH) -u $(INTERACTIVE_USER) -ite "DISPLAY=$(MAKE_DISPLAY)" -v /tmp/.X11-unix:/tmp/.X11-unix -v $(GIT_VOLUME):/export:ro -v $(BIN_VOLUME):/data:rw --rm $(DOCKER_STABLE_NAME):latest /bin/bash
 
 gimp-gui: osx-display
 	docker run -ie DISPLAY=$(MAKE_DISPLAY) -v /tmp/.X11-unix:/tmp/.X11-unix -v $(GIT_VOLUME):/export:ro -v $(BIN_VOLUME):/data:rw --rm $(DOCKER_STABLE_NAME):latest \
@@ -94,7 +103,7 @@ build-gimp: volumes
 	docker run -e GEGL_BRANCH=$(GEGL_BRANCH) -iv $(GIT_VOLUME):/export:ro -v $(BIN_VOLUME):/data:rw --rm $(DOCKER_STABLE_NAME):latest /bin/bash < $(DOCKER_SOURCE)/gegl.sh
 	docker run -iv $(GIT_VOLUME):/export:ro -v $(BIN_VOLUME):/data:rw --rm $(DOCKER_STABLE_NAME):latest /bin/bash < $(DOCKER_SOURCE)/libmypaint.sh
 	docker run -iv $(GIT_VOLUME):/export:ro -v $(BIN_VOLUME):/data:rw --rm $(DOCKER_STABLE_NAME):latest /bin/bash < $(DOCKER_SOURCE)/mypaint-brushes.sh
-	docker run -e GIMP_BRANCH=$(GIMP_BRANCH) -e SKIP_MAKE_CHECK=1 -iv $(GIT_VOLUME):/export:ro -v $(BIN_VOLUME):/data:rw --rm $(DOCKER_STABLE_NAME):latest /bin/bash < $(DOCKER_SOURCE)/gimp.sh
+	docker run -e GIMP_BRANCH=$(GIMP_BRANCH) $(SKIP_TESTS) -iv $(GIT_VOLUME):/export:ro -v $(BIN_VOLUME):/data:rw --rm $(DOCKER_STABLE_NAME):latest /bin/bash < $(DOCKER_SOURCE)/gimp.sh
 
 unstable:
 	docker pull debian:testing
