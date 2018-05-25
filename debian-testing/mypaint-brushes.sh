@@ -24,8 +24,10 @@ if [ -d /export/"${PRODUCT}".git ]; then
 fi
 [ -d "${PRODUCT}" ] || git clone "${GIT_ARGS[@]}" "${REPOSITORY}"
 cd "${PRODUCT}"/
-git fetch /export/"${PRODUCT}".git '+refs/tags/v1.3.0:refs/tags/v1.3.0'
-git checkout 'v1.3.0'
+if [ -d /export/"${PRODUCT}".git ]; then
+    git fetch /export/"${PRODUCT}".git '+refs/heads/v1.3.x:refs/remotes/origin/v1.3.x'
+    git checkout 'v1.3.x'
+fi
 ./autogen.sh
 ./configure --prefix="$PREFIX"
 make "-j$(nproc)" install
