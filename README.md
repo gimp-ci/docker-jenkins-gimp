@@ -33,9 +33,10 @@ GIMP Development Environment
 Welcome to developing GIMP within Docker!  Here are some helpful make commands
 which simplify using Docker to develop GIMP.
 
-Start the GUI of the latest development version.
+Start the GUI of the latest development version (to run tests remove the
+`SKIP_TESTS` argument).
 
-    make build-gimp
+    make SKIP_TESTS=1 build-gimp
     make gimp-gui
 
 Start an interactive terminal which also supports starting the GUI.
@@ -112,6 +113,7 @@ To build and run the latest GIMP 2.8 run the following commands.
 export BIN_SUFFIX='-2.8'
 export GEGL_BRANCH='gegl-0-2'
 export GIMP_BRANCH='gimp-2-8'
+export SKIP_TESTS=1
 make build-gimp
 make gimp-gui
 ```
@@ -123,6 +125,7 @@ To build and run the latest GIMP 2.10 run the following commands.
 ```bash
 export BIN_SUFFIX='-2.10'
 export GIMP_BRANCH='gimp-2-10'
+export SKIP_TESTS=1
 make build-gimp
 make gimp-gui
 ```
@@ -132,6 +135,7 @@ make gimp-gui
 No environment changes are required to build GIMP from `master`.  Simply run:
 
 ```
+export SKIP_TESTS=1
 make build-gimp
 make gimp-gui
 ```
