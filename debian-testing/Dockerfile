@@ -49,7 +49,7 @@ apt-get clean
 
 # install GIMP GTK3 dependencies
 RUN apt-get update && \
-apt-get install libgtk-3-dev libwebkitgtk-3.0-dev && \
+apt-get install libgtk-3-dev libwebkitgtk-3.0-dev libcanberra-gtk3-module && \
 apt-get clean
 
 #
