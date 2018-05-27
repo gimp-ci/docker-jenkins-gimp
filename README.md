@@ -15,7 +15,7 @@ Recommended system specifications:
 Recommended Software:
 
 * Linux Kernel (tested with `4.13.0-41-generic x86_64 x86_64`)
-* [Docker][docker] (tested with `Docker version 1.13.1, build 092cba3`)
+* [Docker][docker] (tested with `Docker version 18.03.1-ce, build 9ee9f40`)
 
 If using Mac OS X:
 
