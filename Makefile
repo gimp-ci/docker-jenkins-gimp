@@ -160,3 +160,5 @@ release:
 dockerhub-publish:
 	docker push $(DOCKER_STABLE_NAME):$(DOCKER_STABLE_VERSION)
 	docker push $(DOCKER_STABLE_NAME):latest
+	git tag $(DOCKER_STABLE_VERSION)
+	git push --tags
