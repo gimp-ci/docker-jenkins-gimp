@@ -15,7 +15,7 @@ popd
 
 # build
 PRODUCT=gegl
-REPOSITORY=git://git.gnome.org/"${PRODUCT}"
+REPOSITORY=https://gitlab.gnome.org/GNOME/"${PRODUCT}"
 GIT_ARGS=()
 if [ -d /export/"${PRODUCT}".git ]; then
     GIT_ARGS=(--reference /export/"${PRODUCT}".git)

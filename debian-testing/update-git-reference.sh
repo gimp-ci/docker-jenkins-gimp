@@ -20,7 +20,7 @@ for x in babl gegl gimp libmypaint mypaint-brushes;do
         elif [ "$x" = 'mypaint-brushes' ]; then
             git clone --mirror https://github.com/Jehan/mypaint-brushes.git /export/mypaint-brushes.git
         else
-            git clone --mirror git://git.gnome.org/"${x}" /export/"${x}".git
+            git clone --mirror https://gitlab.gnome.org/GNOME/"${x}" /export/"${x}".git
         fi
     fi
     ( cd /export/"${x}".git; git remote update --prune )
