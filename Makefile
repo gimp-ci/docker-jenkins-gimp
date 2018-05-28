@@ -92,7 +92,7 @@ osx-display:
 	fi
 
 interactive: osx-display
-	docker run -e GIMP_BRANCH=$(GIMP_BRANCH) -u $(INTERACTIVE_USER) -ite "DISPLAY=$(MAKE_DISPLAY)" -v /tmp/.X11-unix:/tmp/.X11-unix -v $(GIT_VOLUME):/export:ro -v $(BIN_VOLUME):/data:rw --rm $(DOCKER_STABLE_NAME):latest /bin/bash
+	docker run -v $(PWD):/mnt -e GIMP_BRANCH=$(GIMP_BRANCH) -u $(INTERACTIVE_USER) -ite "DISPLAY=$(MAKE_DISPLAY)" -v /tmp/.X11-unix:/tmp/.X11-unix -v $(GIT_VOLUME):/export:ro -v $(BIN_VOLUME):/data:rw --rm $(DOCKER_STABLE_NAME):latest /bin/bash
 
 gimp-gui: osx-display
 	docker run -ie DISPLAY=$(MAKE_DISPLAY) -v /tmp/.X11-unix:/tmp/.X11-unix -v $(GIT_VOLUME):/export:ro -v $(BIN_VOLUME):/data:rw --rm $(DOCKER_STABLE_NAME):latest \
