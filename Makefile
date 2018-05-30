@@ -7,6 +7,13 @@ OS_KERNEL := $(shell uname -s)
 ifdef BIN_SUFFIX
 	BIN_VOLUME := $(BIN_VOLUME)$(BIN_SUFFIX)
 endif
+# check out the appropriate BABL branch
+ifneq ($(BABL_BRANCH),)
+	BABL_BRANCH := $(BABL_BRANCH)
+endif
+ifndef BABL_BRANCH
+	BABL_BRANCH := master
+endif
 # check out the appropriate GEGL branch
 ifneq ($(GEGL_BRANCH),)
 	GEGL_BRANCH := $(GEGL_BRANCH)
@@ -99,7 +106,7 @@ gimp-gui: osx-display
 	/bin/bash -exc 'tar -C "$$PREFIX" -xzf /data/gimp-internal.tar.gz; $$(./usr/bin/gimp-[0-9]*)'
 
 build-gimp: volumes
-	docker run -iv $(GIT_VOLUME):/export:ro -v $(BIN_VOLUME):/data:rw --rm $(DOCKER_STABLE_NAME):latest /bin/bash < $(DOCKER_SOURCE)/babl.sh
+	docker run -e BABL_BRANCH=$(BABL_BRANCH) -iv $(GIT_VOLUME):/export:ro -v $(BIN_VOLUME):/data:rw --rm $(DOCKER_STABLE_NAME):latest /bin/bash < $(DOCKER_SOURCE)/babl.sh
 	docker run -e GEGL_BRANCH=$(GEGL_BRANCH) -iv $(GIT_VOLUME):/export:ro -v $(BIN_VOLUME):/data:rw --rm $(DOCKER_STABLE_NAME):latest /bin/bash < $(DOCKER_SOURCE)/gegl.sh
 	docker run -iv $(GIT_VOLUME):/export:ro -v $(BIN_VOLUME):/data:rw --rm $(DOCKER_STABLE_NAME):latest /bin/bash < $(DOCKER_SOURCE)/libmypaint.sh
 	docker run -iv $(GIT_VOLUME):/export:ro -v $(BIN_VOLUME):/data:rw --rm $(DOCKER_STABLE_NAME):latest /bin/bash < $(DOCKER_SOURCE)/mypaint-brushes.sh

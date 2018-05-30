@@ -17,6 +17,7 @@ if [ -d /export/"${PRODUCT}".git ]; then
 fi
 [ -d "${PRODUCT}" ] || git clone "${GIT_ARGS[@]}" "${REPOSITORY}"
 cd "${PRODUCT}"/
+[ -z "${BABL_BRANCH}" ] || git checkout "${BABL_BRANCH}"
 NOCONFIGURE=1 ./autogen.sh
 ./configure --prefix="$PREFIX"
 make "-j$(nproc)" install
