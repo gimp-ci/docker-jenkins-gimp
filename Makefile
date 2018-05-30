@@ -43,6 +43,9 @@ endif
 ifdef SKIP_TESTS
 	override SKIP_TESTS := -e SKIP_MAKE_CHECK=1
 endif
+ifdef INCLUDE_DISTCHECK
+	override INCLUDE_DISTCHECK := -e INCLUDE_DISTCHECK=1
+endif
 
 .PHONY: about bin-volume build-gimp build-gimp clean clean-all clean-bin-volume clean-git-volume clean-unstable clean-volumes dockerhub-publish end-to-end gimp-gui gimp-gui git-volume interactive osx-display promote release unstable volumes
 
@@ -106,11 +109,11 @@ gimp-gui: osx-display
 	/bin/bash -exc 'tar -C "$$PREFIX" -xzf /data/gimp-internal.tar.gz; $$(./usr/bin/gimp-[0-9]*)'
 
 build-gimp: volumes
-	docker run -e BABL_BRANCH=$(BABL_BRANCH) $(SKIP_TESTS) -iv $(GIT_VOLUME):/export:ro -v $(BIN_VOLUME):/data:rw --rm $(DOCKER_STABLE_NAME):latest /bin/bash < $(DOCKER_SOURCE)/babl.sh
-	docker run -e GEGL_BRANCH=$(GEGL_BRANCH) $(SKIP_TESTS) -iv $(GIT_VOLUME):/export:ro -v $(BIN_VOLUME):/data:rw --rm $(DOCKER_STABLE_NAME):latest /bin/bash < $(DOCKER_SOURCE)/gegl.sh
+	docker run -e BABL_BRANCH=$(BABL_BRANCH) $(SKIP_TESTS) $(INCLUDE_DISTCHECK) -iv $(GIT_VOLUME):/export:ro -v $(BIN_VOLUME):/data:rw --rm $(DOCKER_STABLE_NAME):latest /bin/bash < $(DOCKER_SOURCE)/babl.sh
+	docker run -e GEGL_BRANCH=$(GEGL_BRANCH) $(SKIP_TESTS) $(INCLUDE_DISTCHECK) -iv $(GIT_VOLUME):/export:ro -v $(BIN_VOLUME):/data:rw --rm $(DOCKER_STABLE_NAME):latest /bin/bash < $(DOCKER_SOURCE)/gegl.sh
 	docker run -iv $(GIT_VOLUME):/export:ro -v $(BIN_VOLUME):/data:rw --rm $(DOCKER_STABLE_NAME):latest /bin/bash < $(DOCKER_SOURCE)/libmypaint.sh
 	docker run -iv $(GIT_VOLUME):/export:ro -v $(BIN_VOLUME):/data:rw --rm $(DOCKER_STABLE_NAME):latest /bin/bash < $(DOCKER_SOURCE)/mypaint-brushes.sh
-	docker run -e GIMP_BRANCH=$(GIMP_BRANCH) $(SKIP_TESTS) -iv $(GIT_VOLUME):/export:ro -v $(BIN_VOLUME):/data:rw --rm $(DOCKER_STABLE_NAME):latest /bin/bash < $(DOCKER_SOURCE)/gimp.sh
+	docker run -e GIMP_BRANCH=$(GIMP_BRANCH) $(SKIP_TESTS) $(INCLUDE_DISTCHECK) -iv $(GIT_VOLUME):/export:ro -v $(BIN_VOLUME):/data:rw --rm $(DOCKER_STABLE_NAME):latest /bin/bash < $(DOCKER_SOURCE)/gimp.sh
 
 unstable:
 	docker pull debian:testing

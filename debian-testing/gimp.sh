@@ -28,6 +28,7 @@ cd "${PRODUCT}"/
 ./autogen.sh --prefix="$PREFIX" --enable-gtk-doc
 make "-j$(nproc)" install
 [ -n "${SKIP_MAKE_CHECK:-}" ] || make "-j$(nproc)" check
+[ -z "${INCLUDE_DISTCHECK:-}" ] || make distcheck
 
 ## package binaries for use in GIMP build
 pushd "$PREFIX"
