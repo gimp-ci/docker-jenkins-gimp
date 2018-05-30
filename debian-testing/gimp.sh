@@ -25,9 +25,14 @@ fi
 [ -d "${PRODUCT}" ] || git clone "${GIT_ARGS[@]}" "${REPOSITORY}"
 cd "${PRODUCT}"/
 [ -z "${GIMP_BRANCH}" ] || git checkout "${GIMP_BRANCH}"
-./autogen.sh --prefix="$PREFIX" --enable-gtk-doc
-make "-j$(nproc)" install
+#build and install (runs by default)
+if [ -z "${SKIP_MAKE_BUILD:-}" ]; then
+    ./autogen.sh --prefix="$PREFIX" --enable-gtk-doc
+    make "-j$(nproc)" install
+fi
+#run tests (runs by default)
 [ -n "${SKIP_MAKE_CHECK:-}" ] || make "-j$(nproc)" check
+#run distcheck (disabled by default)
 [ -z "${INCLUDE_DISTCHECK:-}" ] || make distcheck
 
 ## package binaries for use in GIMP build

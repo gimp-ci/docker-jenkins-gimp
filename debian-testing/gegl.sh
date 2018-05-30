@@ -23,10 +23,15 @@ fi
 [ -d "${PRODUCT}" ] || git clone "${GIT_ARGS[@]}" "${REPOSITORY}"
 cd "${PRODUCT}"/
 [ -z "${GEGL_BRANCH}" ] || git checkout "${GEGL_BRANCH}"
-NOCONFIGURE=1 ./autogen.sh
-./configure --prefix="$PREFIX"
-make "-j$(nproc)" install
+#build and install (runs by default)
+if [ -z "${SKIP_MAKE_BUILD:-}" ]; then
+    NOCONFIGURE=1 ./autogen.sh
+    ./configure --prefix="$PREFIX"
+    make "-j$(nproc)" install
+fi
+#run tests (runs by default)
 [ -n "${SKIP_MAKE_CHECK:-}" ] || make "-j$(nproc)" check
+#run distcheck (disabled by default)
 [ -z "${INCLUDE_DISTCHECK:-}" ] || make distcheck
 
 # package binaries for use in GIMP build
