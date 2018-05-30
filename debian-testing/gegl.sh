@@ -26,6 +26,7 @@ cd "${PRODUCT}"/
 NOCONFIGURE=1 ./autogen.sh
 ./configure --prefix="$PREFIX"
 make "-j$(nproc)" install
+[ -n "${SKIP_MAKE_CHECK:-}" ] || make "-j$(nproc)" check
 
 # package binaries for use in GIMP build
 pushd "$PREFIX"

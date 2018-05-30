@@ -99,15 +99,15 @@ osx-display:
 	fi
 
 interactive: osx-display
-	docker run -v $(PWD):/mnt -e GIMP_BRANCH=$(GIMP_BRANCH) -u $(INTERACTIVE_USER) -ite "DISPLAY=$(MAKE_DISPLAY)" -v /tmp/.X11-unix:/tmp/.X11-unix -v $(GIT_VOLUME):/export:ro -v $(BIN_VOLUME):/data:rw --rm $(DOCKER_STABLE_NAME):latest /bin/bash
+	docker run -v $(PWD):/mnt -e GIMP_BRANCH=$(GIMP_BRANCH) -e GEGL_BRANCH=$(GEGL_BRANCH) -e BABL_BRANCH=$(BABL_BRANCH) -u $(INTERACTIVE_USER) -ite "DISPLAY=$(MAKE_DISPLAY)" -v /tmp/.X11-unix:/tmp/.X11-unix -v $(GIT_VOLUME):/export:ro -v $(BIN_VOLUME):/data:rw --rm $(DOCKER_STABLE_NAME):latest /bin/bash
 
 gimp-gui: osx-display
 	docker run -ie DISPLAY=$(MAKE_DISPLAY) -v /tmp/.X11-unix:/tmp/.X11-unix -v $(GIT_VOLUME):/export:ro -v $(BIN_VOLUME):/data:rw --rm $(DOCKER_STABLE_NAME):latest \
 	/bin/bash -exc 'tar -C "$$PREFIX" -xzf /data/gimp-internal.tar.gz; $$(./usr/bin/gimp-[0-9]*)'
 
 build-gimp: volumes
-	docker run -e BABL_BRANCH=$(BABL_BRANCH) -iv $(GIT_VOLUME):/export:ro -v $(BIN_VOLUME):/data:rw --rm $(DOCKER_STABLE_NAME):latest /bin/bash < $(DOCKER_SOURCE)/babl.sh
-	docker run -e GEGL_BRANCH=$(GEGL_BRANCH) -iv $(GIT_VOLUME):/export:ro -v $(BIN_VOLUME):/data:rw --rm $(DOCKER_STABLE_NAME):latest /bin/bash < $(DOCKER_SOURCE)/gegl.sh
+	docker run -e BABL_BRANCH=$(BABL_BRANCH) $(SKIP_TESTS) -iv $(GIT_VOLUME):/export:ro -v $(BIN_VOLUME):/data:rw --rm $(DOCKER_STABLE_NAME):latest /bin/bash < $(DOCKER_SOURCE)/babl.sh
+	docker run -e GEGL_BRANCH=$(GEGL_BRANCH) $(SKIP_TESTS) -iv $(GIT_VOLUME):/export:ro -v $(BIN_VOLUME):/data:rw --rm $(DOCKER_STABLE_NAME):latest /bin/bash < $(DOCKER_SOURCE)/gegl.sh
 	docker run -iv $(GIT_VOLUME):/export:ro -v $(BIN_VOLUME):/data:rw --rm $(DOCKER_STABLE_NAME):latest /bin/bash < $(DOCKER_SOURCE)/libmypaint.sh
 	docker run -iv $(GIT_VOLUME):/export:ro -v $(BIN_VOLUME):/data:rw --rm $(DOCKER_STABLE_NAME):latest /bin/bash < $(DOCKER_SOURCE)/mypaint-brushes.sh
 	docker run -e GIMP_BRANCH=$(GIMP_BRANCH) $(SKIP_TESTS) -iv $(GIT_VOLUME):/export:ro -v $(BIN_VOLUME):/data:rw --rm $(DOCKER_STABLE_NAME):latest /bin/bash < $(DOCKER_SOURCE)/gimp.sh

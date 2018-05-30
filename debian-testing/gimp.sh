@@ -27,7 +27,7 @@ cd "${PRODUCT}"/
 [ -z "${GIMP_BRANCH}" ] || git checkout "${GIMP_BRANCH}"
 ./autogen.sh --prefix="$PREFIX" --enable-gtk-doc
 make "-j$(nproc)" install
-[ -n "${SKIP_MAKE_CHECK:-}" ] || make check
+[ -n "${SKIP_MAKE_CHECK:-}" ] || make "-j$(nproc)" check
 
 ## package binaries for use in GIMP build
 pushd "$PREFIX"
