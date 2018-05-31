@@ -24,6 +24,7 @@ Recommended Software:
 
 * Linux Kernel (tested with `4.13.0-41-generic x86_64 x86_64`)
 * [Docker][docker] (tested with `Docker version 18.03.1-ce, build 9ee9f40`)
+* [X Window System][xorg] (a.k.a. X11) (tested with `X11R7.7`)
 
 If using Mac OS X:
 
@@ -263,4 +264,5 @@ within the dockerized development environment from scratch.
 [gimp]: http://www.gimp.org/
 [libmypaint]: https://github.com/mypaint/libmypaint
 [mypaint-brushes]: https://github.com/Jehan/mypaint-brushes/tree/v1.3.x
+[xorg]: https://www.x.org/
 [xquartz]: https://www.xquartz.org/
