@@ -9,9 +9,11 @@ set -xeo pipefail
 initial_workspace="$PWD"
 
 # dependencies
-pushd "$PREFIX"
-tar -xzf /data/babl-internal.tar.gz
-popd
+if [ -z "${SKIP_MAKE_BUILD:-}" ]; then
+    pushd "$PREFIX"
+    tar -xzf /data/babl-internal.tar.gz
+    popd
+fi
 
 # build
 PRODUCT=gegl

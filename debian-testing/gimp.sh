@@ -9,11 +9,13 @@ set -xeo pipefail
 initial_workspace="$PWD"
 
 # dependencies
-pushd "$PREFIX"
-for x in /data/{babl,gegl,libmypaint,mypaint-brushes}-internal.tar.gz; do
-    tar -xzf "${x}"
-done
-popd
+if [ -z "${SKIP_MAKE_BUILD:-}" ]; then
+    pushd "$PREFIX"
+    for x in /data/{babl,gegl,libmypaint,mypaint-brushes}-internal.tar.gz; do
+        tar -xzf "${x}"
+    done
+    popd
+fi
 
 # build
 PRODUCT=gimp
