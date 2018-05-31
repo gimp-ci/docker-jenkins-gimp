@@ -6,6 +6,8 @@
 
 set -xeo pipefail
 
+PRODUCT=gegl
+REPOSITORY=https://gitlab.gnome.org/GNOME/"${PRODUCT}"
 initial_workspace="$PWD"
 
 # dependencies
@@ -15,19 +17,19 @@ if [ -z "${SKIP_MAKE_BUILD:-}" ]; then
     popd
 fi
 
-# build
-PRODUCT=gegl
-REPOSITORY=https://gitlab.gnome.org/GNOME/"${PRODUCT}"
-GIT_ARGS=()
-if [ -d /export/"${PRODUCT}".git ]; then
-    GIT_ARGS=(--reference /export/"${PRODUCT}".git)
+#clone if not already
+if [ ! -d "${PRODUCT}" ]; then
+    GIT_ARGS=()
+    if [ -d /export/"${PRODUCT}".git ]; then
+        GIT_ARGS=(--reference /export/"${PRODUCT}".git)
+    fi
+    git clone "${GIT_ARGS[@]}" "${REPOSITORY}"
 fi
-[ -d "${PRODUCT}" ] || git clone "${GIT_ARGS[@]}" "${REPOSITORY}"
 cd "${PRODUCT}"/
-[ -z "${GEGL_BRANCH}" ] || git checkout "${GEGL_BRANCH}"
+[ -z "${GEGL_BRANCH}" -o -n "${SKIP_MAKE_BUILD:-}" ] || git checkout "${GEGL_BRANCH}"
 #build and install (runs by default)
 if [ -z "${SKIP_MAKE_BUILD:-}" ]; then
-    NOCONFIGURE=1 ./autogen.sh
+    ./autogen.sh
     ./configure --prefix="$PREFIX"
     make "-j$(nproc)" install
 fi

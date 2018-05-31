@@ -6,6 +6,8 @@
 
 set -xeo pipefail
 
+PRODUCT=gimp
+REPOSITORY=https://gitlab.gnome.org/GNOME/"${PRODUCT}"
 initial_workspace="$PWD"
 
 # dependencies
@@ -17,16 +19,16 @@ if [ -z "${SKIP_MAKE_BUILD:-}" ]; then
     popd
 fi
 
-# build
-PRODUCT=gimp
-REPOSITORY=https://gitlab.gnome.org/GNOME/"${PRODUCT}"
-GIT_ARGS=()
-if [ -d /export/"${PRODUCT}".git ]; then
-    GIT_ARGS=(--reference /export/"${PRODUCT}".git)
+#clone if not already
+if [ ! -d "${PRODUCT}" ]; then
+    GIT_ARGS=()
+    if [ -d /export/"${PRODUCT}".git ]; then
+        GIT_ARGS=(--reference /export/"${PRODUCT}".git)
+    fi
+    git clone "${GIT_ARGS[@]}" "${REPOSITORY}"
 fi
-[ -d "${PRODUCT}" ] || git clone "${GIT_ARGS[@]}" "${REPOSITORY}"
 cd "${PRODUCT}"/
-[ -z "${GIMP_BRANCH}" ] || git checkout "${GIMP_BRANCH}"
+[ -z "${GIMP_BRANCH}" -o -n "${SKIP_MAKE_BUILD:-}" ] || git checkout "${GIMP_BRANCH}"
 #build and install (runs by default)
 if [ -z "${SKIP_MAKE_BUILD:-}" ]; then
     ./autogen.sh --prefix="$PREFIX" --enable-gtk-doc

@@ -6,21 +6,23 @@
 
 set -xeo pipefail
 
-initial_workspace="$PWD"
-
-# build
 PRODUCT=babl
 REPOSITORY=https://gitlab.gnome.org/GNOME/"${PRODUCT}"
-GIT_ARGS=()
-if [ -d /export/"${PRODUCT}".git ]; then
-    GIT_ARGS=(--reference /export/"${PRODUCT}".git)
+initial_workspace="$PWD"
+
+#clone if not already
+if [ ! -d "${PRODUCT}" ]; then
+    GIT_ARGS=()
+    if [ -d /export/"${PRODUCT}".git ]; then
+        GIT_ARGS=(--reference /export/"${PRODUCT}".git)
+    fi
+    git clone "${GIT_ARGS[@]}" "${REPOSITORY}"
 fi
-[ -d "${PRODUCT}" ] || git clone "${GIT_ARGS[@]}" "${REPOSITORY}"
 cd "${PRODUCT}"/
-[ -z "${BABL_BRANCH}" ] || git checkout "${BABL_BRANCH}"
+[ -z "${BABL_BRANCH}" -o -n "${SKIP_MAKE_BUILD:-}" ] || git checkout "${BABL_BRANCH}"
 #build and install (runs by default)
 if [ -z "${SKIP_MAKE_BUILD:-}" ]; then
-    NOCONFIGURE=1 ./autogen.sh
+    ./autogen.sh
     ./configure --prefix="$PREFIX"
     make "-j$(nproc)" install
 fi
