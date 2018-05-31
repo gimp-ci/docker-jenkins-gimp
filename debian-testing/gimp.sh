@@ -28,7 +28,9 @@ if [ ! -d "${PRODUCT}" ]; then
     git clone "${GIT_ARGS[@]}" "${REPOSITORY}"
 fi
 cd "${PRODUCT}"/
-[ -z "${GIMP_BRANCH}" -o -n "${SKIP_MAKE_BUILD:-}" ] || git checkout "${GIMP_BRANCH}"
+if [ -n "${GIMP_BRANCH}" -a -z "${SKIP_MAKE_BUILD:-}" -a -z "${JOB_NAME:-}" ]; then
+    git checkout "${GIMP_BRANCH}"
+fi
 #build and install (runs by default)
 if [ -z "${SKIP_MAKE_BUILD:-}" ]; then
     ./autogen.sh --prefix="$PREFIX" --enable-gtk-doc
