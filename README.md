@@ -236,14 +236,21 @@ curl -LO https://build.gimp.org/job/babl/job/master/lastSuccessfulBuild/artifact
 curl -LO https://build.gimp.org/job/gegl/job/master/lastSuccessfulBuild/artifact/gegl-internal.tar.gz
 curl -LO https://build.gimp.org/job/libmypaint/job/v1.3.0/lastSuccessfulBuild/artifact/libmypaint-internal.tar.gz
 curl -LO https://build.gimp.org/job/mypaint-brushes/job/v1.3.x/lastSuccessfulBuild/artifact/mypaint-brushes-internal.tar.gz
+cd "$HOME"
 
 # Execute a build on the lastest GIMP master branch using the same build scripts
 # as build.gimp.org
-bash /mnt/debian-testing/gimp.sh
+SKIP_MAKE_CHECK=1 bash /mnt/debian-testing/gimp.sh
+
+# Execute tests
+SKIP_MAKE_BUILD=1 bash /mnt/debian-testing/gimp.sh
+
+# Execute a distcheck
+SKIP_MAKE_BUILD=1 SKIP_MAKE_CHECK=1 INCLUDE_DISTCHECK=1 bash /mnt/debian-testing/gimp.sh
 
 # When the build finishes gimp GUI can be started from within the interactive
 # container.
-gimp
+gimp-2.99
 ```
 
 # Manually build GIMP inside Docker
