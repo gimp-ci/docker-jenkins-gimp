@@ -47,7 +47,7 @@ ifdef INCLUDE_DISTCHECK
 	override INCLUDE_DISTCHECK := -e INCLUDE_DISTCHECK=1
 endif
 
-.PHONY: about bin-volume build-gimp build-gimp clean clean-all clean-bin-volume clean-git-volume clean-unstable clean-volumes dockerhub-publish end-to-end gimp-gui gimp-gui git-volume interactive osx-display promote release unstable volumes
+.PHONY: about bin-volume build-babl-only build-gegl-only build-gimp build-gimp build-gimp-only build-libmypaint-only build-mypaint-brushes-only clean clean-all clean-bin-volume clean-git-volume clean-unstable clean-volumes dockerhub-publish end-to-end gimp-gui gimp-gui git-volume interactive osx-display promote release unstable volumes
 
 
 about:
@@ -108,11 +108,21 @@ gimp-gui: osx-display
 	docker run -ie DISPLAY=$(MAKE_DISPLAY) -v /tmp/.X11-unix:/tmp/.X11-unix -v $(GIT_VOLUME):/export:ro -v $(BIN_VOLUME):/data:rw --rm $(DOCKER_STABLE_NAME):latest \
 	/bin/bash -exc 'tar -C "$$PREFIX" -xzf /data/gimp-internal.tar.gz; $$(./usr/bin/gimp-[0-9]*)'
 
-build-gimp: volumes
+build-gimp: volumes build-babl-only build-gegl-only build-libmypaint-only build-mypaint-brushes-only build-gimp-only
+
+build-babl-only:
 	docker run -e BABL_BRANCH=$(BABL_BRANCH) $(SKIP_TESTS) $(INCLUDE_DISTCHECK) -iv $(GIT_VOLUME):/export:ro -v $(BIN_VOLUME):/data:rw --rm $(DOCKER_STABLE_NAME):latest /bin/bash < $(DOCKER_SOURCE)/babl.sh
+
+build-gegl-only:
 	docker run -e GEGL_BRANCH=$(GEGL_BRANCH) $(SKIP_TESTS) $(INCLUDE_DISTCHECK) -iv $(GIT_VOLUME):/export:ro -v $(BIN_VOLUME):/data:rw --rm $(DOCKER_STABLE_NAME):latest /bin/bash < $(DOCKER_SOURCE)/gegl.sh
+
+build-libmypaint-only:
 	docker run -iv $(GIT_VOLUME):/export:ro -v $(BIN_VOLUME):/data:rw --rm $(DOCKER_STABLE_NAME):latest /bin/bash < $(DOCKER_SOURCE)/libmypaint.sh
+
+build-mypaint-brushes-only:
 	docker run -iv $(GIT_VOLUME):/export:ro -v $(BIN_VOLUME):/data:rw --rm $(DOCKER_STABLE_NAME):latest /bin/bash < $(DOCKER_SOURCE)/mypaint-brushes.sh
+
+build-gimp-only:
 	docker run -e GIMP_BRANCH=$(GIMP_BRANCH) $(SKIP_TESTS) $(INCLUDE_DISTCHECK) -iv $(GIT_VOLUME):/export:ro -v $(BIN_VOLUME):/data:rw --rm $(DOCKER_STABLE_NAME):latest /bin/bash < $(DOCKER_SOURCE)/gimp.sh
 
 unstable:

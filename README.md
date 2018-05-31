@@ -92,11 +92,11 @@ The GIMP Development Environment by default builds the latest development branch
 (GIMP branch `master`).  However, other branches of GIMP and GEGL can be built
 as well.  Customizable environment variables.
 
-| Variable      | Description                                                 |
-| ------------- | ----------------------------------------------------------- |
-| `BIN_SUFFIX`  | Customizes the intermediate binary artifact docker volume.  |
-| `GEGL_BRANCH` | Customizes the `git` branch to build for GEGL.              |
-| `GIMP_BRANCH` | Customizes the `git` branch to build for GIMP.              |
+| Variable      | Description                                                  |
+| ------------- | ------------------------------------------------------------ |
+| `BIN_SUFFIX`  | Customizes the intermediate binary artifact docker volume.   |
+| `GEGL_BRANCH` | Customizes the `git` branch to build for GEGL.               |
+| `GIMP_BRANCH` | Customizes the `git` branch to build for GIMP.               |
 
 The binary artifact volume (can be seen with `docker volume ls` command) is
 named `gimp-bin` by default.  This volume is used to share intermediate binary
@@ -134,7 +134,7 @@ make gimp-gui
 
 No environment changes are required to build GIMP from `master`.  Simply run:
 
-```
+```bash
 export SKIP_TESTS=1
 make build-gimp
 make gimp-gui
@@ -150,6 +150,92 @@ this will immediately run through building the latest development versions of
 [mypaint-brushes][mypaint-brushes], and [GIMP][gimp].
 
     make end-to-end
+
+# Troubleshooting build.gimp.org
+
+Sometimes it might make sense to troubleshoot and replicate problems from
+[build.gimp.org][gimp-build] locally within the docker build environment.  To
+that end the following environment variables and make commands are available.
+
+Build scripts located in this repository are available inside of the interactive
+environment at `/mnt/debian-testing/`.
+
+The following variables control build scripts.  By default, the build scripts
+run a build (via `make install`) and tests (via `make check`).
+
+| Variable            | Description                                            |
+| ------------------- | ------------------------------------------------------ |
+| `SKIP_TESTS`        | Skips `make check` which tests projects.               |
+| `INCLUDE_DISTCHECK` | Runs a `make distcheck` which doesn't run by default.  |
+
+The following variables customize what versions are built.
+
+| Variable      | Description                                                  |
+| ------------- | ------------------------------------------------------------ |
+| `BABL_BRANCH` | Customizes the `git` branch to build for BABL.               |
+| `GEGL_BRANCH` | Customizes the `git` branch to build for GEGL.               |
+| `GIMP_BRANCH` | Customizes the `git` branch to build for GIMP.               |
+
+```bash
+# create volumes necessary for building GIMP
+make volumes
+
+# build only BABL
+make build-babl-only
+
+# build only GEGL
+make build-gegl-only
+
+# build only GIMP
+make build-gimp-only
+```
+
+### Resetting a local test environment
+
+Since the `gimp-bin` volume is necessary for saving artifacts from builds, then
+to reset the troubleshooting environment this should be deleted and recreated
+anew.
+
+```
+make clean-bin-volume volumes
+```
+
+Now build commands can run without any prior binary artifacts in the `gimp-bin`
+docker volume.
+
+### Replicating issues from build.gimp.org artifacts
+
+Sometimes, it is desirable to replicate issues from artifacts created on
+[build.gimp.org][gimp-build].  For example, let's utilize the interactive docker
+environment to replicate a hypothetical issue on the GIMP `master` branch.
+
+```bash
+# reset binary volumes
+make clean-bin-volume volumes
+
+# enter the interactive environment
+make interactive
+```
+
+From within the interactive environment we can troubleshoot a build for GIMP by
+pulling down its prerequisite artifacts first.
+
+```bash
+# Download dependent artifacts from build.gimp.org
+cd /data/
+curl -LO https://build.gimp.org/job/babl/job/master/lastSuccessfulBuild/artifact/babl/babl-internal.tar.gz
+curl -LO https://build.gimp.org/job/gegl/job/master/lastSuccessfulBuild/artifact/gegl-internal.tar.gz
+curl -LO https://build.gimp.org/job/libmypaint/job/v1.3.0/lastSuccessfulBuild/artifact/libmypaint-internal.tar.gz
+curl -LO https://build.gimp.org/job/mypaint-brushes/job/v1.3.x/lastSuccessfulBuild/artifact/mypaint-brushes-internal.tar.gz
+
+# Execute a build on the lastest GIMP master branch using the same build scripts
+# as build.gimp.org
+bash /mnt/debian-testing/gimp.sh
+
+# When the build finishes gimp GUI can be started from within the interactive
+# container.
+gimp
+```
 
 # Manually build GIMP inside Docker
 
