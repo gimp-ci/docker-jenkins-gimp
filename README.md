@@ -4,6 +4,14 @@ This is the development environment used by [build.gimp.org][gimp-build] to
 build and test [GIMP][gimp] from the latest development branches of
 [BABL][babl], [GEGL][gegl], and [GIMP][gimp].
 
+### Table of Contents
+
+* [Getting started](#getting-started)
+* [Building alternate GIMP versions](#building-alternate-gimp-versions)
+* [Run end to end testing](#run-end-to-end-testing)
+* [Troubleshooting builds on build.gimp.org](#troubleshooting-builds-on-buildgimporg)
+* [Manually build GIMP inside Docker](#manually-build-gimp-inside-docker)
+
 ### System Requirements
 
 Recommended system specifications:
@@ -151,7 +159,7 @@ this will immediately run through building the latest development versions of
 
     make end-to-end
 
-# Troubleshooting build.gimp.org
+# Troubleshooting builds on build.gimp.org
 
 Sometimes it might make sense to troubleshoot and replicate problems from
 [build.gimp.org][gimp-build] locally within the docker build environment.  To
